@@ -1,53 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
 
 import OpeningBoard from './openingBoard';
 
-function Opening({history, location, match}) {
-    const [error, setError] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [opening, setOpening] = useState(null);
-    const id = match.params.id;
+const useStyles = makeStyles((theme) => ({
+  opening: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sequence: {
+    fontStyle: 'italic',
+  }
+}));
 
-    useEffect(() => {
-        fetch('http://localhost:7000/api/openings/' + id)
-          .then(res => res.json())
-          .then(
-            (result) => {
-              setIsLoaded(true);
-              setOpening(result);
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            (error) => {
-              setIsLoaded(true);
-              setOpening(error);
-            }
-          )
-      }, [])
+function Opening({history, location, match}) {
+  const classes = useStyles();
+
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [opening, setOpening] = useState(null);
+  const id = match.params.id;
+
+  useEffect(() => {
+    fetch('http://localhost:7000/api/openings/' + id)
+      .then(res => res.json())
+      .then((result) => {
+        setIsLoaded(true);
+        setOpening(result);
+      }, (error) => {
+        setIsLoaded(true);
+        setError(error);
+      })
+    }, [])
 
   if(!opening) return null;
 
   return (
-    <Wrapper>
-        <Info>
-            <h1>Opening: {opening.name}</h1>
-            <p>Sequence: {opening.sequence}</p>
-        </Info>
-        <OpeningBoard opening={opening} />
-    </Wrapper>
+    <div className={classes.opening}>
+      <h1>Opening: {opening.name}</h1>
+      <OpeningBoard opening={opening} />
+      <span className={classes.sequence}>Sequence: {opening.sequence}</span>
+    </div>
   );
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Info = styled.div`
-`;
 
 export default Opening;

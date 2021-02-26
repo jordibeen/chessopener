@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
+import OpeningList from './openingList';
+
+const useStyles = makeStyles((theme) => ({
+  home: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+}));
 
 function Home() {
+  const classes = useStyles();
+
   return (
-    <Wrapper>
-        <h1>Home</h1>
-    </Wrapper>
+    <div className={classes.home}>
+      <h1>Chess Openings</h1>
+      <OpeningList/>
+    </div>
   );
 }
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
 
 export default Home;
