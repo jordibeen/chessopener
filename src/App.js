@@ -8,6 +8,7 @@ import theme from 'theme';
 import TopBar from 'components/topBar';
 import Home from 'components/home';
 import About from 'components/about';
+import Opening from 'components/opening';
 
 const MUITheme = createMuiTheme({
   palette: {
@@ -34,6 +35,7 @@ function App() {
                 <TopBar />
                 <Route exact path="/" component={Home} />
                 <Route exact path="/about" component={About} />
+                <Route path="/opening/:id" component={Opening} />
             </BrowserRouter>
         </MUIThemeProvider>
       </SCThemeProvider>
