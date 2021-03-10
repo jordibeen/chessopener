@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    overflowY: 'hidden',
+    overflowX: 'hidden',
+    outline: 'none'
   },
   chessboardHolder: {
     display: 'flex',
@@ -65,6 +68,37 @@ function OpeningBoard(opening) {
     setFen(nextFen);
   }
 
+  function endSequence() {
+    const newCurrentHistoryPosition = history.length
+    const sequence = history.slice(0, newCurrentHistoryPosition);
+    const nextFen = getFenForSequence(sequence);
+    setCurrentHistoryPosition(newCurrentHistoryPosition);
+    setFen(nextFen);
+  }
+
+  function beginningSequence() {
+    const newCurrentHistoryPosition = 0
+    const sequence = history.slice(0, newCurrentHistoryPosition);
+    const nextFen = getFenForSequence(sequence);
+    setCurrentHistoryPosition(newCurrentHistoryPosition);
+    setFen(nextFen);
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === 'ArrowUp') {
+      endSequence()
+    }
+    if (event.key === 'ArrowDown') {
+      beginningSequence()
+    }
+    if (event.key === 'ArrowLeft') {
+      previousClick()
+    }
+    if (event.key === 'ArrowRight') {
+      nextClick()
+    }
+  }
+
   function getFenForSequence(sequence){
     const nextChess = new Chess();
     sequence.forEach((move, i) => {
@@ -76,7 +110,11 @@ function OpeningBoard(opening) {
   if (!fen) return null;
 
   return (
-    <div className={classes.openingBoard}>
+    <div
+      className={classes.openingBoard}
+      onKeyDown={handleKeyPress}
+      tabIndex={-1}
+    >
       <div className={classes.chessboardHolder}>
         <Chessground
             fen={fen}

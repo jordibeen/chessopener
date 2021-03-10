@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    overflowY: 'hidden',
+    overflowX: 'hidden',
+    outline: 'none'
   },
   chessboardHolder: {
      display: 'flex',
@@ -28,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
      zIndex: '1'
    }
 }));
+
+
 
 function CategoryBoard(category) {
   const classes = useStyles();
@@ -67,6 +72,22 @@ function CategoryBoard(category) {
     setFen(nextFen);
   }
 
+  function endSequence() {
+    const newCurrentHistoryPosition = history.length
+    const sequence = history.slice(0, newCurrentHistoryPosition);
+    const nextFen = getFenForSequence(sequence);
+    setCurrentHistoryPosition(newCurrentHistoryPosition);
+    setFen(nextFen);
+  }
+
+  function beginningSequence() {
+    const newCurrentHistoryPosition = 0
+    const sequence = history.slice(0, newCurrentHistoryPosition);
+    const nextFen = getFenForSequence(sequence);
+    setCurrentHistoryPosition(newCurrentHistoryPosition);
+    setFen(nextFen);
+  }
+
   function getFenForSequence(sequence){
     const nextChess = new Chess();
     sequence.forEach((move, i) => {
@@ -75,14 +96,32 @@ function CategoryBoard(category) {
     return nextChess.fen()
   }
 
-  console.log(currentHistoryPosition)
-  console.log(fen)
+  function handleKeyPress(event) {
+    console.log('keypress')
+    if (event.key === 'ArrowUp') {
+      endSequence()
+    }
+    if (event.key === 'ArrowDown') {
+      beginningSequence()
+    }
+    if (event.key === 'ArrowLeft') {
+      previousClick()
+    }
+    if (event.key === 'ArrowRight') {
+      nextClick()
+    }
+  }
 
   if (!fen) return null;
 
   return (
-    <div className={classes.categoryBoard}>
-      <div className={classes.chessboardHolder}>
+    <div
+      className={classes.categoryBoard}
+      onKeyDown={handleKeyPress}
+      tabIndex={-1}
+    >
+      <div className={classes.chessboardHolder}
+        >
         <Chessground
             fen={fen}
             viewOnly={true}
