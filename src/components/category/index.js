@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import OpeningBoard from './openingBoard';
+import CategoryBoard from './categoryBoard';
 
 const useStyles = makeStyles((theme) => ({
-  opening: {
+  category: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -15,36 +15,35 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Opening({history, location, match}) {
+function Category({history, location, match}) {
   const classes = useStyles();
 
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [opening, setOpening] = useState(null);
+  const [category, setCategory] = useState(null);
   const id = match.params.id;
 
   useEffect(() => {
-    fetch('http://localhost:7000/api/openings/' + id)
+    fetch('http://localhost:7000/api/categories/' + id)
       .then(res => res.json())
       .then((result) => {
         setIsLoaded(true);
-        setOpening(result);
+        setCategory(result);
       }, (error) => {
         setIsLoaded(true);
         setError(error);
       })
     }, [])
 
-  if(!opening) return null;
+  if(!category) return null;
 
   return (
-    <div className={classes.opening}>
-      <h1>Opening: {opening.name}</h1>
-      <p>Category: {opening.categoryId}</p>
-      <OpeningBoard opening={opening} />
-      <span className={classes.sequence}>Sequence: {opening.sequence}</span>
+    <div className={classes.category}>
+      <h1>Category: {category.name}</h1>
+      <CategoryBoard category={category} />
+      <span className={classes.sequence}>Sequence: {category.sequence}</span>
     </div>
   );
 }
 
-export default Opening;
+export default Category;

@@ -8,9 +8,11 @@ import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
 
 import AppBar from 'components/appBar';
+import Sidebar from 'components/sidebar';
 import Home from 'components/home';
 import About from 'components/about';
 import Opening from 'components/opening';
+import Category from 'components/category';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -32,11 +34,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
-      <AppBar/>
+
       <BrowserRouter>
+        <Sidebar/>
         <Route exact path="/" component={Home} />
         <Route exact path="/about" component={About} />
         <Route path="/openings/:id" component={Opening} />
+        <Route path="/categories/:id" component={Category} />
       </BrowserRouter>
     </ThemeProvider>
   );
