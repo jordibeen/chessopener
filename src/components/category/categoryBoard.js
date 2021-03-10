@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Chessboard from 'chessboardjsx';
+import Chessground from 'react-chessground';
+import 'react-chessground/dist/styles/chessground.css'
+
 const Chess = require("chess.js");
 
 const useStyles = makeStyles((theme) => ({
@@ -12,36 +15,82 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   chessboardHolder: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    boxShadow: '0px 2px 6px #00000029'
-  }
+     display: 'flex',
+     flexDirection: 'column',
+     alignItems: 'center',
+     justifyContent: 'center',
+     width: '100%',
+     boxShadow: '0px 2px 6px #00000029',
+     marginBottom: '24px'
+   },
+   buttonHolder: {
+     marginTop: '24px',
+     zIndex: '1'
+   }
 }));
 
 function CategoryBoard(category) {
   const classes = useStyles();
 
   const [chess] = useState(new Chess());
-  const [fen, setFen] = useState(chess.fen());
+  const [fen, setFen] = useState(null);
+  const [history, setHistory] = useState(null);
+  const [currentHistoryPosition, setCurrentHistoryPosition] = useState(null);
 
   useEffect(() => {
     chess.load_pgn(category.category.sequence);
-    console.log(chess.fen());
+    const chessHistory = chess.history();
+    setHistory(chessHistory);
+    setCurrentHistoryPosition(chessHistory.length);
     setFen(chess.fen())
-  });
+  }, []);
+
+  function previousClick() {
+    if (currentHistoryPosition === 0) {
+      return;
+    }
+    const newCurrentHistoryPosition = currentHistoryPosition - 1
+    const sequence = history.slice(0, newCurrentHistoryPosition);
+    const nextFen = getFenForSequence(sequence);
+    setCurrentHistoryPosition(newCurrentHistoryPosition);
+    setFen(nextFen);
+  }
+
+  function nextClick() {
+    if(currentHistoryPosition === history.length) {
+      return;
+    }
+    const newCurrentHistoryPosition = currentHistoryPosition + 1
+    const sequence = history.slice(0, newCurrentHistoryPosition);
+    const nextFen = getFenForSequence(sequence);
+    setCurrentHistoryPosition(newCurrentHistoryPosition);
+    setFen(nextFen);
+  }
+
+  function getFenForSequence(sequence){
+    const nextChess = new Chess();
+    sequence.forEach((move, i) => {
+      nextChess.move(move);
+    });
+    return nextChess.fen()
+  }
+
+  console.log(currentHistoryPosition)
+  console.log(fen)
+
+  if (!fen) return null;
 
   return (
     <div className={classes.categoryBoard}>
       <div className={classes.chessboardHolder}>
-        <Chessboard
-          draggable={false}
-          position={fen}
-          lightSquareStyle={ {backgroundColor: '#DEE3E6'} }
-          darkSquareStyle={ {backgroundColor: '#788a94'} }
-        />
+        <Chessground
+            fen={fen}
+            viewOnly={true}
+          />
+      </div>
+      <div className={classes.buttonHolder}>
+        <button onClick={previousClick}>previous</button>
+        <button onClick={nextClick}>next</button>
       </div>
     </div>
   );
