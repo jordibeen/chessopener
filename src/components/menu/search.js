@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 
 const modalStyles = {
   content : {
     backgroundColor: '#272727',
-    width: '512px'
+    width: '512px',
+    padding: 0
   }
 };
 
@@ -16,7 +17,7 @@ function Search() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [openings, setOpenings] = useState([]);
-
+  const inputRef = createRef();
 
   useEffect(() => {
     fetch('http://localhost:7000/api/openings')
@@ -34,6 +35,7 @@ function Search() {
     setSearch(event.target.value);
     const results = openings.filter(c => c.name.includes(search) || c.sequence.includes(search));
     setResults(results);
+    openModal();
   };
 
   function openModal() {
@@ -41,10 +43,12 @@ function Search() {
   }
 
   function afterOpenModal() {
-    console.log('Focus on input');
+    console.log('Open modal');
+    inputRef.current.focus();
   }
 
   function closeModal(){
+    console.log('Close modal');
     setIsOpen(false);
   }
 
@@ -56,10 +60,9 @@ function Search() {
     <Wrapper>
       <SearchInput
         type="text"
-        placeholder="Press esc to search"
+        placeholder="press esc to search"
         value={search}
         onChange={onChange}
-        onFocus={openModal}
       />
       <Modal
         isOpen={modalIsOpen}
@@ -70,8 +73,8 @@ function Search() {
         contentLabel="Search results"
       >
         <ModalSearchInput
+          ref={inputRef}
           type="text"
-          placeholder="Start typing"
           value={search}
           onChange={onChange}
         />
@@ -105,16 +108,30 @@ const SearchInput = styled.input`
   border-radius: 4px;
   width: 100%;
   font-family: nasalization;
+  outline: none;
+  color: ${props => props.theme.colors.pink};
+  font-style: italic;
 `;
 
 const ModalSearchInput = styled.input`
+  background-color: black;
+  height: 64px;
+  border: none;
+  border-radius: 2px;
+  width: 100%;
   font-family: nasalization;
+  outline: none;
+  color: ${props => props.theme.colors.pink};
+  font-style: italic;
+  font-size: 1.6rem;
 `;
 
 const ModalSearchResults = styled.div`
+  padding: 8px;
 `;
 
 const ModalSearchResult = styled.div`
+  border-bottom: 1px solid #eaeaea;
   background-color: ${props => props.theme.colors.componentBackground};
 
    :hover {
