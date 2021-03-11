@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'nasalization';
+  src: url(./assets/fonts/nasalization.ttf) format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
 html {
     height: 100%;
 }
@@ -5,7 +12,7 @@ html {
 body {
   height: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: nasalization, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -19,6 +26,6 @@ code {
 
 #root {
     height: 100%;
-    color: #d89216;
-    background: #2c061f;
+    color: #FFFFFF;
+    background: #121212;
 }

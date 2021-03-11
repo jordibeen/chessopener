@@ -16,6 +16,7 @@ function Menu() {
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
+  margin-bottom: 16px;
   @media (${props => props.theme.breakpoints.mobile}) {
     display: block;
   }
@@ -23,7 +24,7 @@ const Wrapper = styled.div`
 
 const TitleLink = styled.a`
   text-decoration: none;
-  color: ${props => props.theme.colors.color3};
+  color: ${props => props.theme.colors.white};
 `;
 
 const Title = styled.h1`

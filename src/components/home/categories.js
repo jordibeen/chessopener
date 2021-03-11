@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-
 import { SET_CATEGORIES } from 'redux/reducers/category';
+
+import CategoryPreviewBoard from './categoryPreviewBoard';
 
 function Categories() {
   const dispatch = useDispatch();
@@ -37,12 +38,22 @@ function Categories() {
 
   return (
     <Wrapper>
-        <Title>Categories</Title>
+        <Title>Filter by categories</Title>
         <CategoryList>
         {
           categories.map((category) => {
             return (
-              <CategoryTile key={category.id} to={`/categories/${category.id}`}>{category.name}</CategoryTile>
+              <CategoryNavLink key={category.id} to={`/categories/${category.id}`}>
+                <CategoryTile>
+                  <CategoryPreview>
+                    <CategoryPreviewBoard category={category} />
+                  </CategoryPreview>
+                  <CategoryMeta>
+                    <CategoryName>{category.name}</CategoryName>
+                    <CategorySequence>{category.sequence}</CategorySequence>
+                  </CategoryMeta>
+                </CategoryTile>
+              </CategoryNavLink>
             )
           })
         }
@@ -61,17 +72,49 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
+  color: ${props => props.theme.colors.pink};
+  padding: 0 16px;
 `;
 
 const CategoryList = styled.div`
   height: calc(100% - 64px);
   overflow: scroll;
+  padding: 16px;
 `;
 
-const CategoryTile = styled(NavLink)`
+const CategoryNavLink = styled(NavLink)`
   text-decoration: none;
-  color: ${props => props.theme.colors.color3};
-  display: block;
+  color: ${props => props.theme.colors.pink};
+`;
+
+const CategoryTile = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: ${props => props.theme.colors.componentBackground};
+
+  :hover {
+    background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+  }
+`;
+
+const CategoryPreview = styled.div`
+  width: 30%;
+`;
+
+const CategoryMeta = styled.div`
+  width: 70%;
+`;
+
+const CategoryName = styled.h2`
+  font-size: 1.5rem;
+`;
+
+const CategorySequence = styled.span`
+  font-size: 1rem;
+  font-style: italic;
 `;
 
 export default Categories;

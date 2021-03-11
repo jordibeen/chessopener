@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 
+const modalStyles = {
+  content : {
+    backgroundColor: '#272727',
+    width: '512px'
+  }
+};
+
 function Search() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
@@ -49,7 +56,7 @@ function Search() {
     <Wrapper>
       <SearchInput
         type="text"
-        placeholder="Start typing"
+        placeholder="Press esc to search"
         value={search}
         onChange={onChange}
         onFocus={openModal}
@@ -59,6 +66,7 @@ function Search() {
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         ariaHideApp={false}
+        style={modalStyles}
         contentLabel="Search results"
       >
         <ModalSearchInput
@@ -71,9 +79,11 @@ function Search() {
           {
             results.map((opening) => {
               return (
-                <ModalSearchResult key={opening.id} href={`/openings/${opening.id}`}>
-                  <ModalSearchResultName>{opening.name}</ModalSearchResultName>
-                  <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
+                <ModalSearchResult key={opening.id} >
+                  <Link href={`/openings/${opening.id}`}>
+                    <ModalSearchResultName>{opening.name}</ModalSearchResultName>
+                    <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
+                  </Link>
                 </ModalSearchResult>
               )
             })
@@ -90,17 +100,31 @@ const Wrapper = styled.div`
 `;
 
 const SearchInput = styled.input`
+  background-color: ${props => props.theme.colors.componentBackground};
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  font-family: nasalization;
 `;
 
 const ModalSearchInput = styled.input`
+  font-family: nasalization;
 `;
 
 const ModalSearchResults = styled.div`
 `;
 
-const ModalSearchResult = styled.a`
+const ModalSearchResult = styled.div`
+  background-color: ${props => props.theme.colors.componentBackground};
+
+   :hover {
+     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+   }
+`;
+
+const Link = styled.a`
   text-decoration: none;
-  color: ${props => props.theme.colors.color3};
+  color: ${props => props.theme.colors.pink};
 `;
 
 const ModalSearchResultName = styled.p`

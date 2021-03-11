@@ -1,15 +1,10 @@
 const theme = {
-  colorsBu: {
-      color1: "#faf3e0",
-      color2: "#eabf9f",
-      color3: "#b68973",
-      color4: "#1e212d"
-  },
   colors: {
-      color1: "#2c061f",
-      color2: "#374045",
-      color3: "#d89216",
-      color4: "#e1d89f"
+      background: "#121212",
+      componentBackground: "#272727",
+      componentBackgroundHighlight: "#f796ae42",
+      white: "#FFFFFF",
+      pink: "#F796AE"
   },
   breakpoints: {
     mobile: 'max-width: 480px',
