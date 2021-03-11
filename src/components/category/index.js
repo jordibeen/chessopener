@@ -33,8 +33,10 @@ function Category({history, location, match}) {
         setIsLoaded(true);
         setError(error);
       })
-    }, [])
+    }, [id])
 
+  if(!isLoaded) return null;
+  if(error) return null;
   if(!category) return null;
 
   return (

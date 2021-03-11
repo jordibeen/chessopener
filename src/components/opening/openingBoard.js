@@ -44,7 +44,7 @@ function OpeningBoard(opening) {
     setHistory(chessHistory);
     setCurrentHistoryPosition(chessHistory.length);
     setFen(chess.fen())
-  }, []);
+  }, [chess, opening.opening.sequence]);
 
   function previousClick() {
     if (currentHistoryPosition === 0) {

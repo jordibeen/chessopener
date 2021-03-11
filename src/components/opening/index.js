@@ -33,8 +33,10 @@ function Opening({history, location, match}) {
         setIsLoaded(true);
         setError(error);
       })
-    }, [])
+  }, [id])
 
+  if(!isLoaded) return null;
+  if(error) return null;
   if(!opening) return null;
 
   return (

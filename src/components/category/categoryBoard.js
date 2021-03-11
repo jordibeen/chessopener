@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Chessboard from 'chessboardjsx';
 import Chessground from 'react-chessground';
 import 'react-chessground/dist/styles/chessground.css'
 
@@ -48,7 +47,7 @@ function CategoryBoard(category) {
     setHistory(chessHistory);
     setCurrentHistoryPosition(chessHistory.length);
     setFen(chess.fen())
-  }, []);
+  }, [chess, category.category.sequence]);
 
   function previousClick() {
     if (currentHistoryPosition === 0) {
