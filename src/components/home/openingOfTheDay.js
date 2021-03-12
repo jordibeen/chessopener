@@ -8,7 +8,7 @@ function OpeningOfTheDay({history, location, match}) {
   const [opening, setOpening] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:7000/api/openings/' + 1)
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/1`)
       .then(res => res.json())
       .then((result) => {
         setOpening(result);
@@ -56,7 +56,7 @@ const OpeningOfTheDayWrapper = styled.div`
 
 const OpeningOfTheDayTile = styled.div`
   border-radius: 4px;
-  padding: 8px;
+  padding: 32px;
   background-color: ${props => props.theme.colors.componentBackground};
 
   :hover {
@@ -79,8 +79,8 @@ const OpeningOfTheDaySequence = styled.span`
 `;
 
 const OpeningOfTheDayPreviewBoardWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  max-width: 720px;
+  margin: 32px auto;
 `;
 
 export default OpeningOfTheDay;

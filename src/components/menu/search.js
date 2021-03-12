@@ -22,7 +22,7 @@ function Search() {
   const inputRef = createRef();
 
   useEffect(() => {
-    fetch('http://localhost:7000/api/openings')
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings`)
     .then(res => res.json())
     .then((result) => {
       setIsLoaded(true);

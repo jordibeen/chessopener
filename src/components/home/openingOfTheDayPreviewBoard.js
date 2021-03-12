@@ -26,16 +26,25 @@ function OpeningOfTheDayPreviewBoard(opening) {
 }
 
 const Wrapper = styled.div`
-  width: 512px;
-  height: 512px;
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
 
   .cg-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     height: 100%;
     width: 100%;
-    z-index: 0;
   }
 
   coords {
+    display: none;
+  }
+
+  .cg-custom-svgs {
     display: none;
   }
 `;

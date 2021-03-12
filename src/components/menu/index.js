@@ -17,7 +17,8 @@ function Menu() {
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 16px;
+  height: 64px;
+  
   @media (${props => props.theme.breakpoints.mobile}) {
     display: block;
   }

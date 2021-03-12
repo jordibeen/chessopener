@@ -13,7 +13,7 @@ function Categories() {
 
   useEffect(() => {
     if(!categories.length){
-      fetch('http://localhost:7000/api/categories')
+      fetch(`${process.env.REACT_APP_API_BASEURL}/api/categories`)
       .then(res => res.json())
       .then((result) => {
         setCategories(result);
@@ -30,7 +30,7 @@ function Categories() {
 
   return (
     <Wrapper>
-        <Title>Filter by categories</Title>
+        {/* <Title>Filter by categories</Title> */}
         <CategoryList>
         {
           categories.map((category) => {
@@ -57,6 +57,7 @@ function Categories() {
 const Wrapper = styled.div`
   width: 40%;
   height: 100%;
+
   @media (${props => props.theme.breakpoints.mobile}) {
     width: 100%;
     height: 30%;
@@ -69,8 +70,9 @@ const Title = styled.h1`
 `;
 
 const CategoryList = styled.div`
-  overflow: scroll;
   padding: 16px;
+  height: calc(100% - 38px);
+  overflow: scroll;
 `;
 
 const CategoryNavLink = styled(NavLink)`

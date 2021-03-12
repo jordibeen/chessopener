@@ -24,7 +24,7 @@ function Category({history, location, match}) {
   const id = match.params.id;
 
   useEffect(() => {
-    fetch('http://localhost:7000/api/categories/' + id)
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/categories/${id}`)
       .then(res => res.json())
       .then((result) => {
         setIsLoaded(true);

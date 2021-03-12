@@ -26,15 +26,25 @@ function CategoryPreviewBoard(category) {
 }
 
 const Wrapper = styled.div`
+  position: relative;
   width: 100%;
+  padding-top: 100%;
 
   .cg-wrap {
-    height: 104px;
-    width: 104px;
-    z-index: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
   }
 
   coords {
+    display: none;
+  }
+
+  .cg-custom-svgs {
     display: none;
   }
 `;
