@@ -30,7 +30,7 @@ function Categories() {
 
   return (
     <Wrapper>
-        {/* <Title>Filter by categories</Title> */}
+        <Title>Filter by categories</Title>
         <CategoryList>
         {
           categories.map((category) => {
@@ -83,9 +83,9 @@ const CategoryNavLink = styled(NavLink)`
 const CategoryTile = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
   border-radius: 4px;
-  padding: 8px;
+  padding: 32px;
   background-color: ${props => props.theme.colors.componentBackground};
 
   :hover {
@@ -94,11 +94,13 @@ const CategoryTile = styled.div`
 `;
 
 const CategoryPreview = styled.div`
-  width: 30%;
+  width: 25%;
+  margin: 0 24px;
 `;
 
 const CategoryMeta = styled.div`
-  width: 70%;
+  width: 75%;
+  margin: 0 24px;
 `;
 
 const CategoryName = styled.h2`

@@ -35,3 +35,7 @@ code {
   color: #FFFFFF;
   background: #121212;
 }
+
+.ReactModal__Overlay {
+    z-index: 2;
+}
