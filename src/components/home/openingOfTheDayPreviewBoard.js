@@ -26,9 +26,12 @@ function OpeningOfTheDayPreviewBoard(opening) {
 }
 
 const Wrapper = styled.div`
+  width: 512px;
+  height: 512px;
+
   .cg-wrap {
-    height: 512px;
-    width: 512px;
+    height: 100%;
+    width: 100%;
     z-index: 0;
   }
 

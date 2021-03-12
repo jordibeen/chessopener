@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import Search from './search'
 
 function Menu() {
   return (
     <Wrapper>
-      <TitleLink href='/'>
+      <TitleLink to='/'>
         <Title>Chess openings</Title>
       </TitleLink>
       <Search />
@@ -22,7 +23,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const TitleLink = styled.a`
+const TitleLink = styled(NavLink)`
   text-decoration: none;
   color: ${props => props.theme.colors.white};
 `;

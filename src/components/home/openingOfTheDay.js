@@ -5,24 +5,18 @@ import { NavLink } from 'react-router-dom';
 import OpeningOfTheDayPreviewBoard from './openingOfTheDayPreviewBoard';
 
 function OpeningOfTheDay({history, location, match}) {
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [opening, setOpening] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:7000/api/openings/' + 1)
       .then(res => res.json())
       .then((result) => {
-        setIsLoaded(true);
         setOpening(result);
       }, (error) => {
-        setIsLoaded(true);
-        setError(error);
+
       })
     }, [])
 
-  if(!isLoaded) return null;
-  if(error) return null;
   if(!opening) return null;
 
   return (
@@ -45,7 +39,6 @@ function OpeningOfTheDay({history, location, match}) {
 
 const Wrapper = styled.div`
   width: 60%;
-  height: 100%;
   @media (${props => props.theme.breakpoints.mobile}) {
     width: 100%;
     height: 70%;

@@ -16,7 +16,7 @@ function Home() {
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 104px);
   @media (${props => props.theme.breakpoints.mobile}) {
     display: block;
   }

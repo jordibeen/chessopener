@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createRef } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
+import { NavLink } from 'react-router-dom';
 
 const modalStyles = {
   content : {
@@ -17,6 +18,7 @@ function Search() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [openings, setOpenings] = useState([]);
+  const searchInputRef = createRef();
   const inputRef = createRef();
 
   useEffect(() => {
@@ -31,9 +33,20 @@ function Search() {
     })
   }, []);
 
+  useEffect(() => {
+    document.addEventListener('keydown', escapeFunc, false);
+    return () => document.removeEventListener('keydown', escapeFunc, false);
+  });
+
+  function escapeFunc(e) {
+    if (e.keyCode === 27) {
+      setIsOpen(!modalIsOpen)
+      console.log('escape');
+    }
+  }
   function onChange(event) {
     setSearch(event.target.value);
-    const results = openings.filter(c => c.name.includes(search) || c.sequence.includes(search));
+    const results = openings.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || c.sequence.toLowerCase().includes(search.toLowerCase()));
     setResults(results);
     openModal();
   };
@@ -45,6 +58,7 @@ function Search() {
   function afterOpenModal() {
     console.log('Open modal');
     inputRef.current.focus();
+    // searchInputRef.current.blur();
   }
 
   function closeModal(){
@@ -59,6 +73,7 @@ function Search() {
   return (
     <Wrapper>
       <SearchInput
+        ref={searchInputRef}
         type="text"
         placeholder="press esc to search"
         value={search}
@@ -83,7 +98,7 @@ function Search() {
             results.map((opening) => {
               return (
                 <ModalSearchResult key={opening.id} >
-                  <Link href={`/openings/${opening.id}`}>
+                  <Link to={`/openings/${opening.id}`} onClick={closeModal}>
                     <ModalSearchResultName>{opening.name}</ModalSearchResultName>
                     <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
                   </Link>
@@ -139,7 +154,7 @@ const ModalSearchResult = styled.div`
    }
 `;
 
-const Link = styled.a`
+const Link = styled(NavLink)`
   text-decoration: none;
   color: ${props => props.theme.colors.pink};
 `;

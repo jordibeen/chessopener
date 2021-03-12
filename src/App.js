@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import theme from 'theme';
+import 'assets/chessboard/style.css'
 
 import Home from 'components/home';
 import Menu from 'components/menu';
@@ -13,8 +14,8 @@ import Category from 'components/category';
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Menu />
       <BrowserRouter>
+        <Menu />
         <Route exact path="/" component={Home} />
         <Route exact path="/about" component={About} />
         <Route path="/openings/:id" component={Opening} />

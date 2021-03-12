@@ -9,9 +9,6 @@ import CategoryPreviewBoard from './categoryPreviewBoard';
 function Categories() {
   const dispatch = useDispatch();
   const storedCategories = useSelector(state => state.category.categories)
-
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [categories, setCategories] = useState(storedCategories);
 
   useEffect(() => {
@@ -19,21 +16,16 @@ function Categories() {
       fetch('http://localhost:7000/api/categories')
       .then(res => res.json())
       .then((result) => {
-        setIsLoaded(true);
         setCategories(result);
         dispatch({
             type: SET_CATEGORIES,
             payload: result
           });
       }, (error) => {
-        setIsLoaded(true);
-        setError(error);
       })
     }
   }, [categories, dispatch])
 
-  if(!isLoaded) return null;
-  if(error) return null;
   if(!categories) return null;
 
   return (
@@ -77,7 +69,6 @@ const Title = styled.h1`
 `;
 
 const CategoryList = styled.div`
-  height: calc(100% - 64px);
   overflow: scroll;
   padding: 16px;
 `;

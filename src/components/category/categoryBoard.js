@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Chessground from 'react-chessground';
-import 'react-chessground/dist/styles/chessground.css'
 
 const Chess = require("chess.js");
 
