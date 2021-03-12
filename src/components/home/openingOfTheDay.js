@@ -79,7 +79,7 @@ const OpeningOfTheDaySequence = styled.span`
 `;
 
 const OpeningOfTheDayPreviewBoardWrapper = styled.div`
-  max-width: 720px;
+  max-width: 512px;
   margin: 32px auto;
 `;
 
