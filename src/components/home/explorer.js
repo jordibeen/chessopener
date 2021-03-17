@@ -10,19 +10,22 @@ function Explorer(opening) {
   const [chess] = useState(new Chess());
   const [lastMove, setLastMove] = useState();
   const [sequence, setSequence] = useState();
+  const [count, setCount] = useState(0);
   const [openings, setOpenings] = useState([]);
   const [orientation, setOrientation] = useState(false);
   const [fen, setFen] = useState('start');
 
   useEffect(() => {
     if(!sequence) {
+      setCount(0);
       setOpenings([]);
       return;
     }
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?sequence=${sequence}`)
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?sequence=${sequence}&limit=25`)
     .then(res => res.json())
     .then((result) => {
-      setOpenings(result);
+      setCount(result.count);
+      setOpenings(result.rows);
     }, (error) => {
     })
   }, [sequence]);
@@ -71,6 +74,7 @@ function Explorer(opening) {
     setOrientation(!orientation);
   }
 
+  console.log(openings);
   if (!fen) return null;
 
   return (
@@ -89,16 +93,19 @@ function Explorer(opening) {
             }
           />
         </BoardHolder>
+        <ButtonHolder>
+          <UndoButton onClick={onUndoClick}>Undo</UndoButton>
+          <OrientationButton onClick={onOrientationClick}>Switch Orientation</OrientationButton>
+        </ButtonHolder>
       </BoardWrapper>
-      <ButtonHolder>
-        <UndoButton onClick={onUndoClick}>Undo</UndoButton>
-        <OrientationButton onClick={onOrientationClick}>Switch Orientation</OrientationButton>
-      </ButtonHolder>
       <InformationWrapper>
-        <SequenceWrapper>
-          <h2>Sequence</h2>
-          <Sequence>{sequence}</Sequence>
-        </SequenceWrapper>
+        {
+            count ?
+            <SequenceWrapper>
+              <h2>{count} openings in database for sequence:</h2>
+              <Sequence>{sequence}</Sequence>
+            </SequenceWrapper> : null
+        }
         <MatchingOpeningsWrapper>
           {
               openings.map((opening) => {
@@ -121,14 +128,14 @@ function Explorer(opening) {
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   width: 100%;
   height: 100%;
 `;
 
 const BoardWrapper = styled.div`
-  width: 70%;
-  max-width: 640px;
+  width: 50%;
+  max-width: 32vw;
 `;
 
 const BoardHolder = styled.div`
@@ -152,7 +159,9 @@ const BoardHolder = styled.div`
 `;
 
 const ButtonHolder = styled.div`
-  margin-top: 24px;
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
 `;
 
 const UndoButton = styled.button`
@@ -164,8 +173,10 @@ const OrientationButton = styled.button`
 `;
 
 const InformationWrapper = styled.div`
-  width: 30%;
+  width: 50%;
+  max-width: 32vw;
   height: 100%;
+  overflow: scroll;
   background-color: ${props => props.theme.colors.componentBackground};
 `;
 
@@ -179,7 +190,6 @@ const Sequence = styled.span`
 
 const MatchingOpeningsWrapper = styled.div`
   height: 100%;
-  overflow: scroll;
 `;
 
 const MatchingOpeningResult = styled.div`

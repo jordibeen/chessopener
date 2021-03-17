@@ -9,7 +9,6 @@ import Home from 'components/home';
 import Menu from 'components/menu';
 import About from 'components/about';
 import Opening from 'components/opening';
-import Category from 'components/category';
 
 function App() {
   return (
@@ -19,7 +18,6 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/about" component={About} />
         <Route path="/openings/:id" component={Opening} />
-        <Route path="/categories/:id" component={Category} />
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -17,19 +17,22 @@ function Search() {
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
   const [modalIsOpen,setIsOpen] = useState(false);
+  const [count, setCount] = useState(0);
   const [openings, setOpenings] = useState([]);
   const menuSearchInputRef = createRef();
   const modalSearchInputRef = createRef();
 
   useEffect(() => {
     if(debouncedSearch) {
-      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}`)
+      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=25`)
       .then(res => res.json())
       .then((result) => {
-        setOpenings(result);
+        setOpenings(result.rows);
+        setCount(result.count);
       }, (error) => {
       })
     } else {
+      setCount(0);
       setOpenings([]);
     }
   }, [debouncedSearch]);
@@ -91,6 +94,11 @@ function Search() {
           value={search}
           onChange={onChange}
         />
+        { count ?
+            <ModalSearchCount>
+              {count} openings in database:
+            </ModalSearchCount> : null
+        }
         <ModalSearchResults>
           {
             openings.map((opening) => {
@@ -137,6 +145,11 @@ const ModalSearchInput = styled.input`
   color: ${props => props.theme.colors.pink};
   font-style: italic;
   font-size: 1.6rem;
+`;
+
+const ModalSearchCount = styled.span`
+  font-size: 1.6rem;
+  color: ${props => props.theme.colors.pink};
 `;
 
 const ModalSearchResults = styled.div`
