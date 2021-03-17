@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Modal from 'react-modal';
 import { NavLink } from 'react-router-dom';
 
+import useDebounce from 'helpers/useDebounce';
+
 const modalStyles = {
   content : {
     backgroundColor: '#272727',
@@ -13,25 +15,24 @@ const modalStyles = {
 
 function Search() {
   const [search, setSearch] = useState('');
-  const [results, setResults] = useState([]);
+  const debouncedSearch = useDebounce(search, 500);
   const [modalIsOpen,setIsOpen] = useState(false);
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [openings, setOpenings] = useState([]);
-  const searchInputRef = createRef();
-  const inputRef = createRef();
+  const menuSearchInputRef = createRef();
+  const modalSearchInputRef = createRef();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings`)
-    .then(res => res.json())
-    .then((result) => {
-      setIsLoaded(true);
-      setOpenings(result);
-    }, (error) => {
-      setIsLoaded(true);
-      setError(error);
-    })
-  }, []);
+    if(debouncedSearch) {
+      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}`)
+      .then(res => res.json())
+      .then((result) => {
+        setOpenings(result);
+      }, (error) => {
+      })
+    } else {
+      setOpenings([]);
+    }
+  }, [debouncedSearch]);
 
   useEffect(() => {
     document.addEventListener('keydown', escapeFunc, false);
@@ -46,19 +47,17 @@ function Search() {
   }
   function onChange(event) {
     setSearch(event.target.value);
-    const results = openings.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || c.sequence.toLowerCase().includes(search.toLowerCase()));
-    setResults(results);
     openModal();
   };
 
   function openModal() {
     setIsOpen(true);
+    menuSearchInputRef.current.blur();
   }
 
   function afterOpenModal() {
     console.log('Open modal');
-    inputRef.current.focus();
-    // searchInputRef.current.blur();
+    modalSearchInputRef.current.focus();
   }
 
   function closeModal(){
@@ -66,18 +65,17 @@ function Search() {
     setIsOpen(false);
   }
 
-  if(!isLoaded) return null;
-  if(error) return null;
-  if(!results) return null;
+  if(!openings) return null;
 
   return (
     <Wrapper>
       <SearchInput
-        ref={searchInputRef}
+        ref={menuSearchInputRef}
         type="text"
         placeholder="press esc to search"
         value={search}
         onChange={onChange}
+        onFocus={openModal}
       />
       <Modal
         isOpen={modalIsOpen}
@@ -88,14 +86,14 @@ function Search() {
         contentLabel="Search results"
       >
         <ModalSearchInput
-          ref={inputRef}
+          ref={modalSearchInputRef}
           type="text"
           value={search}
           onChange={onChange}
         />
         <ModalSearchResults>
           {
-            results.map((opening) => {
+            openings.map((opening) => {
               return (
                 <ModalSearchResult key={opening.id} >
                   <Link to={`/openings/${opening.id}`} onClick={closeModal}>

@@ -11,6 +11,7 @@ function Explorer(opening) {
   const [lastMove, setLastMove] = useState();
   const [sequence, setSequence] = useState();
   const [openings, setOpenings] = useState([]);
+  const [orientation, setOrientation] = useState(false);
   const [fen, setFen] = useState('start');
 
   useEffect(() => {
@@ -66,6 +67,10 @@ function Explorer(opening) {
     setSequence(getSequenceForHistory(chess.history()));
   }
 
+  function onOrientationClick(){
+    setOrientation(!orientation);
+  }
+
   if (!fen) return null;
 
   return (
@@ -79,11 +84,15 @@ function Explorer(opening) {
             animation={
               { enabled: false }
             }
+            orientation={
+              orientation ? 'black' : 'white'
+            }
           />
         </BoardHolder>
       </BoardWrapper>
       <ButtonHolder>
         <UndoButton onClick={onUndoClick}>Undo</UndoButton>
+        <OrientationButton onClick={onOrientationClick}>Switch Orientation</OrientationButton>
       </ButtonHolder>
       <InformationWrapper>
         <SequenceWrapper>
@@ -148,6 +157,10 @@ const ButtonHolder = styled.div`
 
 const UndoButton = styled.button`
   background-color: red;
+`;
+
+const OrientationButton = styled.button`
+  background-color: green;
 `;
 
 const InformationWrapper = styled.div`
