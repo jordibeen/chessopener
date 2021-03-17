@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import Chessground from 'react-chessground';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 const Chess = require("chess.js");
@@ -14,6 +15,9 @@ function Explorer(opening) {
   const [openings, setOpenings] = useState([]);
   const [orientation, setOrientation] = useState(false);
   const [fen, setFen] = useState('start');
+  const limit = 50;
+  const [hasMore, setHasMore] = useState(false);
+  const [offset, setOffset] = useState(false);
 
   useEffect(() => {
     if(!sequence) {
@@ -21,7 +25,7 @@ function Explorer(opening) {
       setOpenings([]);
       return;
     }
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?sequence=${sequence}&limit=25`)
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?sequence=${sequence}&limit=${limit}`)
     .then(res => res.json())
     .then((result) => {
       setCount(result.count);
@@ -29,6 +33,17 @@ function Explorer(opening) {
     }, (error) => {
     })
   }, [sequence]);
+
+  useEffect(() => {
+    const page = Math.ceil(openings.length / limit);
+    const nextOffset = page * limit;
+    if(nextOffset < count) {
+      setHasMore(true);
+    } else {
+      setHasMore(false);
+    }
+    setOffset(nextOffset);
+  }, [openings])
 
   function onMove(from, to) {
     const legalMoves = chess.moves( { verbose: true })
@@ -74,7 +89,16 @@ function Explorer(opening) {
     setOrientation(!orientation);
   }
 
-  console.log(openings);
+  function fetchData(){
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?sequence=${sequence}&limit=${limit}&offset=${offset}`)
+    .then(res => res.json())
+    .then((result) => {
+      setCount(result.count);
+      setOpenings(openings.concat(result.rows));
+    }, (error) => {
+    })
+  }
+
   if (!fen) return null;
 
   return (
@@ -98,7 +122,7 @@ function Explorer(opening) {
           <OrientationButton onClick={onOrientationClick}>Switch Orientation</OrientationButton>
         </ButtonHolder>
       </BoardWrapper>
-      <InformationWrapper>
+      <InformationWrapper id='InformationWrapper'>
         {
             count ?
             <SequenceWrapper>
@@ -107,18 +131,30 @@ function Explorer(opening) {
             </SequenceWrapper> : null
         }
         <MatchingOpeningsWrapper>
-          {
-              openings.map((opening) => {
-                return (
-                  <MatchingOpeningResult key={opening.id} >
-                    <Link to={`/openings/${opening.id}`}>
-                      <MatchingOpeningResultName>{opening.name}</MatchingOpeningResultName>
-                      <MatchingOpeningResultSequence>{opening.sequence}</MatchingOpeningResultSequence>
-                    </Link>
-                  </MatchingOpeningResult>
-                )
-              })
-          }
+          <InfiniteScroll
+            dataLength={openings.length}
+            next={fetchData}
+            hasMore={hasMore}
+            loader={<p>...</p>}
+            scrollableTarget={'InformationWrapper'}
+            endMessage={
+              <p style={{ textAlign: 'center' }}>
+                <b>end</b>
+              </p>
+            } >
+            {
+                openings.map((opening) => {
+                  return (
+                    <MatchingOpeningResult key={opening.id} >
+                      <Link to={`/openings/${opening.id}`}>
+                        <MatchingOpeningResultName>{opening.name} ({opening.eco})</MatchingOpeningResultName>
+                        <MatchingOpeningResultSequence>{opening.sequence}</MatchingOpeningResultSequence>
+                      </Link>
+                    </MatchingOpeningResult>
+                  )
+                })
+            }
+          </InfiniteScroll>
         </MatchingOpeningsWrapper>
       </InformationWrapper>
     </Wrapper>

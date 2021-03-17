@@ -2,6 +2,7 @@ import React, { useState, useEffect, createRef } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import { NavLink } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import useDebounce from 'helpers/useDebounce';
 
@@ -9,7 +10,8 @@ const modalStyles = {
   content : {
     backgroundColor: '#272727',
     width: '512px',
-    padding: 0
+    padding: 0,
+    overflow: 'none'
   }
 };
 
@@ -21,10 +23,13 @@ function Search() {
   const [openings, setOpenings] = useState([]);
   const menuSearchInputRef = createRef();
   const modalSearchInputRef = createRef();
+  const limit = 50;
+  const [hasMore, setHasMore] = useState(false);
+  const [offset, setOffset] = useState(false);
 
   useEffect(() => {
     if(debouncedSearch) {
-      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=25`)
+      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=${limit}`)
       .then(res => res.json())
       .then((result) => {
         setOpenings(result.rows);
@@ -41,6 +46,17 @@ function Search() {
     document.addEventListener('keydown', escapeFunc, false);
     return () => document.removeEventListener('keydown', escapeFunc, false);
   });
+
+  useEffect(() => {
+    const page = Math.ceil(openings.length / limit);
+    const nextOffset = page * limit;
+    if(nextOffset < count) {
+      setHasMore(true);
+    } else {
+      setHasMore(false);
+    }
+    setOffset(nextOffset);
+  }, [openings])
 
   function escapeFunc(e) {
     if (e.keyCode === 27) {
@@ -66,6 +82,17 @@ function Search() {
   function closeModal(){
     console.log('Close modal');
     setIsOpen(false);
+  }
+
+  function fetchData(){
+    console.log('fetch');
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=${limit}&offset=${offset}`)
+    .then(res => res.json())
+    .then((result) => {
+      setCount(result.count);
+      setOpenings(openings.concat(result.rows));
+    }, (error) => {
+    })
   }
 
   if(!openings) return null;
@@ -94,25 +121,39 @@ function Search() {
           value={search}
           onChange={onChange}
         />
-        { count ?
-            <ModalSearchCount>
-              {count} openings in database:
-            </ModalSearchCount> : null
-        }
-        <ModalSearchResults>
-          {
-            openings.map((opening) => {
-              return (
-                <ModalSearchResult key={opening.id} >
-                  <Link to={`/openings/${opening.id}`} onClick={closeModal}>
-                    <ModalSearchResultName>{opening.name}</ModalSearchResultName>
-                    <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
-                  </Link>
-                </ModalSearchResult>
-              )
-            })
+        <ModalSearchWrapper id='ModalSearchWrapper'>
+          { count ?
+              <ModalSearchCount>
+                {count} openings in database:
+              </ModalSearchCount> : null
           }
-        </ModalSearchResults>
+          <ModalSearchResults>
+            <InfiniteScroll
+              dataLength={openings.length}
+              next={fetchData}
+              hasMore={hasMore}
+              loader={<p>...</p>}
+              scrollableTarget={'ModalSearchWrapper'}
+              endMessage={
+                <p style={{ textAlign: 'center' }}>
+                  <b>end</b>
+                </p>
+              } >
+              {
+                openings.map((opening) => {
+                  return (
+                    <ModalSearchResult key={opening.id} >
+                      <Link to={`/openings/${opening.id}`} onClick={closeModal}>
+                        <ModalSearchResultName>{opening.name}</ModalSearchResultName>
+                        <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
+                      </Link>
+                    </ModalSearchResult>
+                  )
+                })
+              }
+            </InfiniteScroll>
+          </ModalSearchResults>
+        </ModalSearchWrapper>
       </Modal>
     </Wrapper>
   );
@@ -145,6 +186,11 @@ const ModalSearchInput = styled.input`
   color: ${props => props.theme.colors.pink};
   font-style: italic;
   font-size: 1.6rem;
+`;
+
+const ModalSearchWrapper = styled.div`
+  height: 100%;
+  overflow: scroll;
 `;
 
 const ModalSearchCount = styled.span`
