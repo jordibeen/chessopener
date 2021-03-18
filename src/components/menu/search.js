@@ -9,9 +9,12 @@ import useDebounce from 'helpers/useDebounce';
 const modalStyles = {
   content : {
     backgroundColor: '#272727',
-    width: '512px',
+    width: '760px',
     padding: 0,
-    overflow: 'none'
+    overflow: 'none',
+    height: '90%',
+    display: 'flex',
+    flexDirection: 'column'
   }
 };
 
@@ -28,18 +31,18 @@ function Search() {
   const [offset, setOffset] = useState(false);
 
   useEffect(() => {
-    if(debouncedSearch) {
-      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=${limit}`)
+    if(!debouncedSearch) {
+      setCount(0);
+      setOpenings([]);
+      return;
+    }
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=${limit}`)
       .then(res => res.json())
       .then((result) => {
         setOpenings(result.rows);
         setCount(result.count);
       }, (error) => {
-      })
-    } else {
-      setCount(0);
-      setOpenings([]);
-    }
+    })
   }, [debouncedSearch]);
 
   useEffect(() => {
@@ -56,7 +59,7 @@ function Search() {
       setHasMore(false);
     }
     setOffset(nextOffset);
-  }, [openings])
+  }, [openings, count])
 
   function escapeFunc(e) {
     if (e.keyCode === 27) {
@@ -95,6 +98,7 @@ function Search() {
     })
   }
 
+
   if(!openings) return null;
 
   return (
@@ -132,13 +136,8 @@ function Search() {
               dataLength={openings.length}
               next={fetchData}
               hasMore={hasMore}
-              loader={<p>...</p>}
               scrollableTarget={'ModalSearchWrapper'}
-              endMessage={
-                <p style={{ textAlign: 'center' }}>
-                  <b>end</b>
-                </p>
-              } >
+            >
               {
                 openings.map((opening) => {
                   return (
@@ -165,27 +164,31 @@ const Wrapper = styled.div`
 `;
 
 const SearchInput = styled.input`
+  padding-left: 16px;
+  letter-spacing: 1.5px;
   background-color: ${props => props.theme.colors.componentBackground};
   border: none;
   border-radius: 4px;
   width: 100%;
-  font-family: nasalization;
+  font-family: menlo;
   outline: none;
-  color: ${props => props.theme.colors.pink};
-  font-style: italic;
+  color: ${props => props.theme.colors.white};
+  font-weight: bold;
 `;
 
 const ModalSearchInput = styled.input`
+  padding-left: 16px;
+  letter-spacing: 1.5px;
   background-color: black;
   height: 64px;
   border: none;
   border-radius: 2px;
   width: 100%;
-  font-family: nasalization;
+  font-family: menlo;
   outline: none;
-  color: ${props => props.theme.colors.pink};
-  font-style: italic;
+  color: ${props => props.theme.colors.white};
   font-size: 1.6rem;
+  font-weight: bold;
 `;
 
 const ModalSearchWrapper = styled.div`
@@ -195,10 +198,11 @@ const ModalSearchWrapper = styled.div`
 
 const ModalSearchCount = styled.span`
   font-size: 1.6rem;
-  color: ${props => props.theme.colors.pink};
+  color: ${props => props.theme.colors.green};
 `;
 
 const ModalSearchResults = styled.div`
+  height: 100%;
   padding: 8px;
 `;
 
@@ -213,16 +217,18 @@ const ModalSearchResult = styled.div`
 
 const Link = styled(NavLink)`
   text-decoration: none;
-  color: ${props => props.theme.colors.pink};
+  color: ${props => props.theme.colors.green};
 `;
 
 const ModalSearchResultName = styled.p`
-  font-size: 24px;
+  font-size: 16px;
+  color: ${props => props.theme.colors.white};
 `;
 
 const ModalSearchResultSequence = styled.p`
   font-size: 12px;
   font-style: italic;
+  color: ${props => props.theme.colors.default};
 `;
 
 export default Search;

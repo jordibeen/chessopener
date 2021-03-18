@@ -7,7 +7,7 @@ function Menu() {
   return (
     <Wrapper>
       <TitleLink to='/'>
-        <Title>Chess openings</Title>
+        <Title>chess openings</Title>
       </TitleLink>
       <Search />
     </Wrapper>
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   display: flex;
   width: 100%;
   height: 64px;
-  
+
   @media (${props => props.theme.breakpoints.mobile}) {
     display: block;
   }
@@ -26,7 +26,8 @@ const Wrapper = styled.div`
 
 const TitleLink = styled(NavLink)`
   text-decoration: none;
-  color: ${props => props.theme.colors.white};
+  color: ${props => props.theme.colors.green};
+  text-align: center;
 `;
 
 const Title = styled.h1`

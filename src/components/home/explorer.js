@@ -43,7 +43,7 @@ function Explorer(opening) {
       setHasMore(false);
     }
     setOffset(nextOffset);
-  }, [openings])
+}, [openings, count])
 
   function onMove(from, to) {
     const legalMoves = chess.moves( { verbose: true })
@@ -130,18 +130,13 @@ function Explorer(opening) {
               <Sequence>{sequence}</Sequence>
             </SequenceWrapper> : null
         }
-        <MatchingOpeningsWrapper>
+        <MatchingOpeningsWrapper id='MatchingOpeningsWrapper'>
           <InfiniteScroll
             dataLength={openings.length}
             next={fetchData}
             hasMore={hasMore}
-            loader={<p>...</p>}
-            scrollableTarget={'InformationWrapper'}
-            endMessage={
-              <p style={{ textAlign: 'center' }}>
-                <b>end</b>
-              </p>
-            } >
+            scrollableTarget={'MatchingOpeningsWrapper'}
+          >
             {
                 openings.map((opening) => {
                   return (
@@ -212,8 +207,9 @@ const InformationWrapper = styled.div`
   width: 50%;
   max-width: 32vw;
   height: 100%;
-  overflow: scroll;
   background-color: ${props => props.theme.colors.componentBackground};
+  display: flex;
+  flex-direction: column;
 `;
 
 const SequenceWrapper = styled.div`
@@ -226,6 +222,7 @@ const Sequence = styled.span`
 
 const MatchingOpeningsWrapper = styled.div`
   height: 100%;
+  overflow: scroll;
 `;
 
 const MatchingOpeningResult = styled.div`
@@ -239,7 +236,7 @@ const MatchingOpeningResult = styled.div`
 
 const Link = styled(NavLink)`
   text-decoration: none;
-  color: ${props => props.theme.colors.pink};
+  color: ${props => props.theme.colors.green};
 `;
 
 const MatchingOpeningResultName = styled.p`

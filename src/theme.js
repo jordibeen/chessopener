@@ -1,9 +1,11 @@
 const theme = {
   colors: {
-      background: "#121212",
-      componentBackground: "#272727",
-      componentBackgroundHighlight: "#f796ae42",
-      white: "#FFFFFF",
+      background: "#1d1f21",
+      componentBackground: "#212326",
+      componentBackgroundHighlight: "#2bbc8a61",
+      white: "#eee",
+      default: "#c9cacc",
+      green: "#2bbc8a",
       pink: "#F796AE"
   },
   breakpoints: {
