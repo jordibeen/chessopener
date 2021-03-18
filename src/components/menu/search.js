@@ -7,6 +7,10 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import useDebounce from 'helpers/useDebounce';
 
 const modalStyles = {
+
+  overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.75)',
+  },
   content : {
     backgroundColor: '#272727',
     width: '760px',
@@ -14,7 +18,7 @@ const modalStyles = {
     overflow: 'none',
     height: '90%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   }
 };
 
@@ -128,7 +132,7 @@ function Search() {
         <ModalSearchWrapper id='ModalSearchWrapper'>
           { count ?
               <ModalSearchCount>
-                {count} openings in database:
+                ({count}) results
               </ModalSearchCount> : null
           }
           <ModalSearchResults>
@@ -143,7 +147,7 @@ function Search() {
                   return (
                     <ModalSearchResult key={opening.id} >
                       <Link to={`/openings/${opening.id}`} onClick={closeModal}>
-                        <ModalSearchResultName>{opening.name}</ModalSearchResultName>
+                        <ModalSearchResultName>[{opening.eco}] {opening.name}</ModalSearchResultName>
                         <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
                       </Link>
                     </ModalSearchResult>
@@ -194,10 +198,12 @@ const ModalSearchInput = styled.input`
 const ModalSearchWrapper = styled.div`
   height: 100%;
   overflow: scroll;
+  width: 100%;
 `;
 
-const ModalSearchCount = styled.span`
-  font-size: 1.6rem;
+const ModalSearchCount = styled.div`
+  text-align: right;
+  padding: 8px;
   color: ${props => props.theme.colors.green};
 `;
 
@@ -207,9 +213,8 @@ const ModalSearchResults = styled.div`
 `;
 
 const ModalSearchResult = styled.div`
-  border-bottom: 1px solid #eaeaea;
-  background-color: ${props => props.theme.colors.componentBackground};
-
+    margin: 0 8px;
+    border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
    :hover {
      background-color: ${props => props.theme.colors.componentBackgroundHighlight};
    }

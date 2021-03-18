@@ -49,7 +49,7 @@ function Explorer(opening) {
     const legalMoves = chess.moves( { verbose: true })
     let move = null;
     legalMoves.forEach(m => {
-      if(m.from == from && m.to == to){
+      if(m.from === from && m.to === to){
         move = m;
       }
     });
@@ -123,12 +123,16 @@ function Explorer(opening) {
         </ButtonHolder>
       </BoardWrapper>
       <InformationWrapper id='InformationWrapper'>
+        <SequenceWrapper>
+          <Sequence>{
+            sequence ?
+              sequence :
+              'play an opening to show results'
+          }</Sequence>
+        </SequenceWrapper>
         {
-            count ?
-            <SequenceWrapper>
-              <h2>{count} openings in database for sequence:</h2>
-              <Sequence>{sequence}</Sequence>
-            </SequenceWrapper> : null
+          count ?
+          <SequenceCount>({count}) results</SequenceCount> : null
         }
         <MatchingOpeningsWrapper id='MatchingOpeningsWrapper'>
           <InfiniteScroll
@@ -142,7 +146,7 @@ function Explorer(opening) {
                   return (
                     <MatchingOpeningResult key={opening.id} >
                       <Link to={`/openings/${opening.id}`}>
-                        <MatchingOpeningResultName>{opening.name} ({opening.eco})</MatchingOpeningResultName>
+                        <MatchingOpeningResultName>[{opening.eco}] {opening.name}</MatchingOpeningResultName>
                         <MatchingOpeningResultSequence>{opening.sequence}</MatchingOpeningResultSequence>
                       </Link>
                     </MatchingOpeningResult>
@@ -196,11 +200,40 @@ const ButtonHolder = styled.div`
 `;
 
 const UndoButton = styled.button`
-  background-color: red;
+  padding: 16px;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  background-color: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
+  font-family: menlo;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 8px;
+
+  :hover {
+     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+   }
 `;
 
 const OrientationButton = styled.button`
-  background-color: green;
+  padding: 16px;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  background-color: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
+  font-family: menlo;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  font-size: 16px;
+  cursor: pointer;
+
+  :hover {
+     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+   }
 `;
 
 const InformationWrapper = styled.div`
@@ -213,11 +246,25 @@ const InformationWrapper = styled.div`
 `;
 
 const SequenceWrapper = styled.div`
-  background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+  background-color: ${props => props.theme.colors.black};
+  height: 64px;
+  padding: 16px;
+  letter-spacing: 1.5px;
+  border: none;
+  border-radius: 2px;
+  width: 100%;
 `;
 
 const Sequence = styled.span`
-  font-size: 24px;
+  color: ${props => props.theme.colors.white};
+  font-size: 1.6rem;
+  font-weight: bold;
+`;
+
+const SequenceCount = styled.div`
+  text-align: right;
+  padding: 8px;
+  color: ${props => props.theme.colors.green};
 `;
 
 const MatchingOpeningsWrapper = styled.div`
@@ -226,12 +273,20 @@ const MatchingOpeningsWrapper = styled.div`
 `;
 
 const MatchingOpeningResult = styled.div`
-  border-bottom: 1px solid #eaeaea;
-  background-color: ${props => props.theme.colors.componentBackground};
+  margin: 0 8px;
+  border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
 
-   :hover {
-     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
-   }
+  :hover {
+   background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+  }
+
+  /* ::after {
+    content: "";
+    width: 0px;
+    height: 3px;
+    background-color: ${props => props.theme.colors.green};
+    border-radius: 1px;
+  } */
 `;
 
 const Link = styled(NavLink)`
@@ -240,12 +295,14 @@ const Link = styled(NavLink)`
 `;
 
 const MatchingOpeningResultName = styled.p`
-  font-size: 24px;
+  font-size: 16px;
+  color: ${props => props.theme.colors.white};
 `;
 
 const MatchingOpeningResultSequence = styled.p`
   font-size: 12px;
   font-style: italic;
+  color: ${props => props.theme.colors.default};
 `;
 
 export default Explorer;

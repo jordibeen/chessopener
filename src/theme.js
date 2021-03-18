@@ -1,12 +1,14 @@
 const theme = {
   colors: {
+      black: "#000000",
       background: "#1d1f21",
       componentBackground: "#212326",
       componentBackgroundHighlight: "#2bbc8a61",
       white: "#eee",
       default: "#c9cacc",
       green: "#2bbc8a",
-      pink: "#F796AE"
+      pink: "#F796AE",
+      lightgrey: "#eaeaea"
   },
   breakpoints: {
     mobile: 'max-width: 480px',
