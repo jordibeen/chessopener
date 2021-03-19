@@ -26,8 +26,10 @@ const Wrapper = styled.div`
 
 const TitleLink = styled(NavLink)`
   text-decoration: none;
-  color: ${props => props.theme.colors.green};
+  color: ${props => props.theme.colors.white};
   text-align: center;
+  font-weight: bold;
+  letter-spacing: 4px; 
 `;
 
 const Title = styled.h1`

@@ -99,6 +99,18 @@ function Explorer(opening) {
     })
   }
 
+  function getSequenceMatchString(search, sequence) {
+    const leftOver = sequence.replace(search, '');
+
+    return (
+      <MatchingOpeningResultSequence>
+        <Match>{search}</Match>
+        <LeftOver>{leftOver}</LeftOver>
+      </MatchingOpeningResultSequence>
+    )
+
+  }
+
   if (!fen) return null;
 
   return (
@@ -129,11 +141,12 @@ function Explorer(opening) {
               sequence :
               'play an opening to show results'
           }</Sequence>
+          {
+            count ?
+            <SequenceCount>{count} results</SequenceCount> : null
+          }
         </SequenceWrapper>
-        {
-          count ?
-          <SequenceCount>({count}) results</SequenceCount> : null
-        }
+
         <MatchingOpeningsWrapper id='MatchingOpeningsWrapper'>
           <InfiniteScroll
             dataLength={openings.length}
@@ -147,7 +160,7 @@ function Explorer(opening) {
                     <MatchingOpeningResult key={opening.id} >
                       <Link to={`/openings/${opening.id}`}>
                         <MatchingOpeningResultName>[{opening.eco}] {opening.name}</MatchingOpeningResultName>
-                        <MatchingOpeningResultSequence>{opening.sequence}</MatchingOpeningResultSequence>
+                        { getSequenceMatchString(sequence, opening.sequence) }
                       </Link>
                     </MatchingOpeningResult>
                   )
@@ -206,7 +219,7 @@ const UndoButton = styled.button`
   border-radius: 4px;
   background-color: ${props => props.theme.colors.black};
   color: ${props => props.theme.colors.white};
-  font-family: menlo;
+  font-family: della-respira;
   font-weight: bold;
   letter-spacing: 1.5px;
   font-size: 16px;
@@ -225,7 +238,7 @@ const OrientationButton = styled.button`
   border-radius: 4px;
   background-color: ${props => props.theme.colors.black};
   color: ${props => props.theme.colors.white};
-  font-family: menlo;
+  font-family: della-respira;
   font-weight: bold;
   letter-spacing: 1.5px;
   font-size: 16px;
@@ -243,6 +256,8 @@ const InformationWrapper = styled.div`
   background-color: ${props => props.theme.colors.componentBackground};
   display: flex;
   flex-direction: column;
+  border: 1px solid ${props => props.theme.colors.lightgrey};
+  border-radius: 12px;
 `;
 
 const SequenceWrapper = styled.div`
@@ -253,18 +268,28 @@ const SequenceWrapper = styled.div`
   border: none;
   border-radius: 2px;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 12px 12px 0 0;
 `;
 
 const Sequence = styled.span`
-  color: ${props => props.theme.colors.white};
-  font-size: 1.6rem;
+  color: ${props => props.theme.colors.green};
   font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 2px;
+`;
+
+const Match = styled.span`
+  color: ${props => props.theme.colors.green};
+`;
+
+const LeftOver = styled.span`
 `;
 
 const SequenceCount = styled.div`
-  text-align: right;
-  padding: 8px;
-  color: ${props => props.theme.colors.green};
+  margin-top: 6px;
+  color: ${props => props.theme.colors.white};
 `;
 
 const MatchingOpeningsWrapper = styled.div`
@@ -273,20 +298,10 @@ const MatchingOpeningsWrapper = styled.div`
 `;
 
 const MatchingOpeningResult = styled.div`
-  margin: 0 8px;
+  margin: 0 16px;
   border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
-
-  :hover {
-   background-color: ${props => props.theme.colors.componentBackgroundHighlight};
-  }
-
-  /* ::after {
-    content: "";
-    width: 0px;
-    height: 3px;
-    background-color: ${props => props.theme.colors.green};
-    border-radius: 1px;
-  } */
+  padding: 16px 0;
+  cursor: pointer;
 `;
 
 const Link = styled(NavLink)`
@@ -295,14 +310,17 @@ const Link = styled(NavLink)`
 `;
 
 const MatchingOpeningResultName = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   color: ${props => props.theme.colors.white};
+  margin-bottom: 8px;
+  font-weight: bold;
 `;
 
 const MatchingOpeningResultSequence = styled.p`
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
-  color: ${props => props.theme.colors.default};
+  color: ${props => props.theme.colors.lightgrey};
+  letter-spacing: 1px;
 `;
 
 export default Explorer;

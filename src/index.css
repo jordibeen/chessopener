@@ -6,8 +6,29 @@
 }
 
 @font-face {
-  font-family: 'menlo';
-  src: url(./assets/fonts/menlo.ttf) format('truetype');
+  font-family: 'della-respira';
+  src: url(./assets/fonts/della-respira.ttf) format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'della-respira';
+  src: url(./assets/fonts/della-respira.ttf) format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'sorts-mill-goudy';
+  src: url(./assets/fonts/sorts-mill-goudy.ttf) format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'volkorn';
+  src: url(./assets/fonts/volkorn.ttf) format('truetype');
   font-weight: 400;
   font-style: normal;
 }
@@ -25,13 +46,13 @@ html {
 body {
   height: 100%;
   margin: 0;
-  font-family: menlo, monospace;
+  font-family: della-respira, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, della-respira, Monaco, Consolas, 'Courier New',
     monospace;
 }
 

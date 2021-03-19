@@ -1,40 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-
+import styled from 'styled-components';
 import Chessground from 'react-chessground';
 
 const Chess = require("chess.js");
 
-const useStyles = makeStyles((theme) => ({
-  openingBoard: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflowY: 'hidden',
-    overflowX: 'hidden',
-    outline: 'none'
-  },
-  chessboardHolder: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    boxShadow: '0px 2px 6px #00000029'
-  },
-    buttonHolder: {
-    marginTop: '24px',
-    zIndex: '1'
-   }
-}));
-
 function OpeningBoard(opening) {
-  const classes = useStyles();
-
   const [chess] = useState(new Chess());
   const [fen, setFen] = useState(null);
   const [history, setHistory] = useState(null);
+  const [orientation, setOrientation] = useState(false);
   const [currentHistoryPosition, setCurrentHistoryPosition] = useState(null);
 
   useEffect(() => {
@@ -106,26 +80,173 @@ function OpeningBoard(opening) {
     return nextChess.fen()
   }
 
+  function onOrientationClick(){
+    setOrientation(!orientation);
+  }
+
   if (!fen) return null;
 
   return (
-    <div
-      className={classes.openingBoard}
-      onKeyDown={handleKeyPress}
-      tabIndex={-1}
-    >
-      <div className={classes.chessboardHolder}>
-        <Chessground
+    <Wrapper>
+      <BoardWrapper>
+        <BoardHolder>
+          <Chessground
             fen={fen}
             viewOnly={true}
+            orientation={
+              orientation ? 'black' : 'white'
+            }
           />
-      </div>
-      <div className={classes.buttonHolder}>
-        <button onClick={previousClick}>previous</button>
-        <button onClick={nextClick}>next</button>
-      </div>
-    </div>
+        </BoardHolder>
+        <ButtonHolder>
+          <UndoButton onClick={previousClick}>Previous</UndoButton>
+          <UndoButton onClick={nextClick}>Next</UndoButton>
+          <OrientationButton onClick={onOrientationClick}>Orientation</OrientationButton>
+        </ButtonHolder>
+      </BoardWrapper>
+      <InformationWrapper>
+        <OpeningDetailsWrapper>
+          <EcoWrapper>
+            <Eco>{opening.opening.eco}</Eco>
+          </EcoWrapper>
+          <NameSequenceWrapper>
+            <Name>{opening.opening.name}</Name>
+            <Sequence>{opening.opening.sequence}</Sequence>
+          </NameSequenceWrapper>
+        </OpeningDetailsWrapper>
+      </InformationWrapper>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+`;
+
+const BoardWrapper = styled.div`
+  width: 50%;
+  max-width: 32vw;
+`;
+
+const BoardHolder = styled.div`
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+
+  .cg-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .cg-custom-svgs {
+    display: none;
+  }
+`;
+
+const ButtonHolder = styled.div`
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+`;
+
+const UndoButton = styled.button`
+  padding: 16px;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  background-color: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
+  font-family: della-respira;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 8px;
+
+  :hover {
+     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+   }
+`;
+
+const OrientationButton = styled.button`
+  padding: 16px;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  background-color: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
+  font-family: della-respira;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  font-size: 16px;
+  cursor: pointer;
+
+  :hover {
+     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+   }
+`;
+
+const InformationWrapper = styled.div`
+  width: 50%;
+  max-width: 32vw;
+  height: 100%;
+  background-color: ${props => props.theme.colors.componentBackground};
+  display: flex;
+  flex-direction: column;
+  border: 1px solid ${props => props.theme.colors.lightgrey};
+  border-radius: 12px;
+`;
+
+const OpeningDetailsWrapper = styled.div`
+  background-color: ${props => props.theme.colors.black};
+  height: 64px;
+  border: none;
+  width: 100%;
+  display: flex;
+  border-radius: 12px 12px 0 0;
+`;
+
+const EcoWrapper = styled.div`
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Eco = styled.span`
+  color: ${props => props.theme.colors.white};
+  font-weight: bold;
+  font-size: 24px;
+  letter-spacing: 2px;
+`;
+
+const NameSequenceWrapper = styled.div`
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const Name = styled.span`
+  color: ${props => props.theme.colors.white};
+  font-weight: bold;
+  font-size: 18px;
+`;
+
+const Sequence = styled.span`
+  color: ${props => props.theme.colors.green};
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 1px;
+`;
 
 export default OpeningBoard;

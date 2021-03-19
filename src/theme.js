@@ -8,7 +8,7 @@ const theme = {
       default: "#c9cacc",
       green: "#2bbc8a",
       pink: "#F796AE",
-      lightgrey: "#eaeaea"
+      lightgrey: "#717171"
   },
   breakpoints: {
     mobile: 'max-width: 480px',

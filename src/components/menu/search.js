@@ -19,6 +19,8 @@ const modalStyles = {
     height: '90%',
     display: 'flex',
     flexDirection: 'column',
+    border: '1px solid #717171',
+    borderRadius: '12px'
   }
 };
 
@@ -68,7 +70,6 @@ function Search() {
   function escapeFunc(e) {
     if (e.keyCode === 27) {
       setIsOpen(!modalIsOpen)
-      console.log('escape');
     }
   }
   function onChange(event) {
@@ -82,17 +83,14 @@ function Search() {
   }
 
   function afterOpenModal() {
-    console.log('Open modal');
     modalSearchInputRef.current.focus();
   }
 
   function closeModal(){
-    console.log('Close modal');
     setIsOpen(false);
   }
 
   function fetchData(){
-    console.log('fetch');
     fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=${limit}&offset=${offset}`)
     .then(res => res.json())
     .then((result) => {
@@ -102,6 +100,20 @@ function Search() {
     })
   }
 
+  function getNameMatchString(search, name) {
+      const substring = new RegExp(search, "gi");
+      const matchedname = name.replace(substring, (match) => {return (`***${match}***`)});
+      const matchedArray = matchedname.split('***');
+      return (
+        <MatchingResultName>
+          {matchedArray[0]}
+          <MatchingResultNameMatch>
+            {matchedArray[1]}
+          </MatchingResultNameMatch>
+          {matchedArray[2]}
+        </MatchingResultName>
+      );
+  }
 
   if(!openings) return null;
 
@@ -123,18 +135,20 @@ function Search() {
         style={modalStyles}
         contentLabel="Search results"
       >
-        <ModalSearchInput
-          ref={modalSearchInputRef}
-          type="text"
-          value={search}
-          onChange={onChange}
-        />
-        <ModalSearchWrapper id='ModalSearchWrapper'>
+        <ModalSearchInputWrapper>
+          <ModalSearchInput
+            ref={modalSearchInputRef}
+            type="text"
+            value={search}
+            onChange={onChange}
+          />
           { count ?
               <ModalSearchCount>
-                ({count}) results
+                {count} results
               </ModalSearchCount> : null
           }
+        </ModalSearchInputWrapper>
+        <ModalSearchWrapper id='ModalSearchWrapper'>
           <ModalSearchResults>
             <InfiniteScroll
               dataLength={openings.length}
@@ -147,7 +161,7 @@ function Search() {
                   return (
                     <ModalSearchResult key={opening.id} >
                       <Link to={`/openings/${opening.id}`} onClick={closeModal}>
-                        <ModalSearchResultName>[{opening.eco}] {opening.name}</ModalSearchResultName>
+                        <ModalSearchResultName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)}</ModalSearchResultName>
                         <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
                       </Link>
                     </ModalSearchResult>
@@ -174,23 +188,30 @@ const SearchInput = styled.input`
   border: none;
   border-radius: 4px;
   width: 100%;
-  font-family: menlo;
+  font-family: della-respira;
   outline: none;
-  color: ${props => props.theme.colors.white};
+  color: ${props => props.theme.colors.green};
   font-weight: bold;
 `;
 
+const ModalSearchInputWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: ${props => props.theme.colors.black};
+  border-radius: 12px 12px 0 0;
+`;
+
 const ModalSearchInput = styled.input`
+  width: 75%;
   padding-left: 16px;
   letter-spacing: 1.5px;
   background-color: black;
   height: 64px;
   border: none;
-  border-radius: 2px;
-  width: 100%;
-  font-family: menlo;
+  border-radius: 12px 0 0 0;
+  font-family: della-respira;
   outline: none;
-  color: ${props => props.theme.colors.white};
+  color: ${props => props.theme.colors.green};
   font-size: 1.6rem;
   font-weight: bold;
 `;
@@ -202,22 +223,24 @@ const ModalSearchWrapper = styled.div`
 `;
 
 const ModalSearchCount = styled.div`
-  text-align: right;
-  padding: 8px;
   color: ${props => props.theme.colors.green};
+  margin: 0px 16px;
+  display: flex;
+  align-items: center;
 `;
 
 const ModalSearchResults = styled.div`
   height: 100%;
-  padding: 8px;
 `;
 
 const ModalSearchResult = styled.div`
-    margin: 0 8px;
+    margin: 0 16px;
     border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
-   :hover {
-     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
-   }
+    padding: 16px 0;
+`;
+
+const Match = styled.span`
+  color: ${props => props.theme.colors.green}
 `;
 
 const Link = styled(NavLink)`
@@ -226,14 +249,23 @@ const Link = styled(NavLink)`
 `;
 
 const ModalSearchResultName = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   color: ${props => props.theme.colors.white};
+  margin-bottom: 8px;
+  font-weight: bold;
+`;
+
+const MatchingResultName = styled.span`
+`;
+
+const MatchingResultNameMatch = styled.span`
+  color: ${props => props.theme.colors.green};
 `;
 
 const ModalSearchResultSequence = styled.p`
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
-  color: ${props => props.theme.colors.default};
+  color: ${props => props.theme.colors.lightgrey};
 `;
 
 export default Search;
