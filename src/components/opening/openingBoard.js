@@ -88,46 +88,25 @@ function OpeningBoard(opening) {
 
   return (
     <Wrapper>
-      <BoardWrapper>
-        <BoardHolder>
-          <Chessground
-            fen={fen}
-            viewOnly={true}
-            orientation={
-              orientation ? 'black' : 'white'
-            }
-          />
-        </BoardHolder>
-        <ButtonHolder>
-          <UndoButton onClick={previousClick}>Previous</UndoButton>
-          <UndoButton onClick={nextClick}>Next</UndoButton>
-          <OrientationButton onClick={onOrientationClick}>Orientation</OrientationButton>
-        </ButtonHolder>
-      </BoardWrapper>
-      <InformationWrapper>
-        <OpeningDetailsWrapper>
-          <EcoWrapper>
-            <Eco>{opening.opening.eco}</Eco>
-          </EcoWrapper>
-          <NameSequenceWrapper>
-            <Name>{opening.opening.name}</Name>
-            <Sequence>{opening.opening.sequence}</Sequence>
-          </NameSequenceWrapper>
-        </OpeningDetailsWrapper>
-      </InformationWrapper>
+      <BoardHolder>
+        <Chessground
+          fen={fen}
+          viewOnly={true}
+          orientation={
+            orientation ? 'black' : 'white'
+          }
+        />
+      </BoardHolder>
+      <ButtonHolder>
+        <UndoButton onClick={previousClick}>Previous</UndoButton>
+        <UndoButton onClick={nextClick}>Next</UndoButton>
+        <OrientationButton onClick={onOrientationClick}>Orientation</OrientationButton>
+      </ButtonHolder>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
-  height: 100%;
-`;
-
-const BoardWrapper = styled.div`
   width: 50%;
   max-width: 32vw;
 `;
@@ -193,60 +172,6 @@ const OrientationButton = styled.button`
   :hover {
      background-color: ${props => props.theme.colors.componentBackgroundHighlight};
    }
-`;
-
-const InformationWrapper = styled.div`
-  width: 50%;
-  max-width: 32vw;
-  height: 100%;
-  background-color: ${props => props.theme.colors.componentBackground};
-  display: flex;
-  flex-direction: column;
-  border: 1px solid ${props => props.theme.colors.lightgrey};
-  border-radius: 12px;
-`;
-
-const OpeningDetailsWrapper = styled.div`
-  background-color: ${props => props.theme.colors.black};
-  height: 64px;
-  border: none;
-  width: 100%;
-  display: flex;
-  border-radius: 12px 12px 0 0;
-`;
-
-const EcoWrapper = styled.div`
-  width: 15%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Eco = styled.span`
-  color: ${props => props.theme.colors.white};
-  font-weight: bold;
-  font-size: 24px;
-  letter-spacing: 2px;
-`;
-
-const NameSequenceWrapper = styled.div`
-  width: 85%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const Name = styled.span`
-  color: ${props => props.theme.colors.white};
-  font-weight: bold;
-  font-size: 18px;
-`;
-
-const Sequence = styled.span`
-  color: ${props => props.theme.colors.green};
-  font-style: italic;
-  font-size: 14px;
-  letter-spacing: 1px;
 `;
 
 export default OpeningBoard;
