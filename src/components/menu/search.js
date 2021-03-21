@@ -101,18 +101,27 @@ function Search() {
   }
 
   function getNameMatchString(search, name) {
-      const substring = new RegExp(search, "gi");
-      const matchedname = name.replace(substring, (match) => {return (`***${match}***`)});
-      const matchedArray = matchedname.split('***');
-      return (
-        <MatchingResultName>
-          {matchedArray[0]}
-          <MatchingResultNameMatch>
-            {matchedArray[1]}
-          </MatchingResultNameMatch>
-          {matchedArray[2]}
-        </MatchingResultName>
-      );
+      let retval = [];
+
+      const searches = search.split(' ');
+      searches.forEach((s, i) => {
+        const substring = new RegExp(s, "gi");
+        name = name.replace(substring, (match) => {return (`***${match}***`)});
+      });
+
+      name.split('***').forEach((match, i) => {
+        if(i % 2){
+          retval.push(
+            <MatchingResultNameMatch>{match}</MatchingResultNameMatch>
+          )
+        } else {
+          retval.push(
+            <MatchingResultName>{match}</MatchingResultName>
+          )
+        }
+      });
+
+      return retval;
   }
 
   if(!openings) return null;

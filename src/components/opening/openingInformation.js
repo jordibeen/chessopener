@@ -50,12 +50,14 @@ function OpeningInformation(opening) {
         {
           games.map((game) => {
             return (
-              <LichessGame>
-                <p>{game.whiteName} ({game.whiteRating}) vs {game.blackName} ({game.blackRating})</p>
-                <p>Type: {game.speed}</p>
-                <p>Date: {game.playedAt}</p>
-                <p>Winner: {game.winner}</p>
-              </LichessGame>
+              <LichessLink target='_blank' rel="noopener noreferrer" href={`https://lichess.org/${game.lichessId}`} >
+                <LichessGame>
+                  <p>{game.whiteName} ({game.whiteRating}) vs {game.blackName} ({game.blackRating})</p>
+                  <p>Type: {game.speed}</p>
+                  <p>Date: {game.playedAt}</p>
+                  <p>Winner: {game.winner}</p>
+                </LichessGame>
+              </LichessLink>
             )
           })
         }
@@ -133,7 +135,13 @@ const LichessGamesWrapper = styled.div`
   overflow: scroll;
 `;
 
+const LichessLink = styled.a`
+  text-decoration: none;
+  color: ${props => props.theme.colors.lightgrey}
+`;
+
 const LichessGame = styled.div`
+  border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
 `;
 
 export default OpeningInformation;

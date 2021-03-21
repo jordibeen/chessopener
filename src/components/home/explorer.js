@@ -76,7 +76,8 @@ function Explorer(opening) {
         sequence += `${h} `;
       }
     });
-    return sequence;
+    // Remove trailing space from sequence string to match current sequence in searches
+    return sequence.slice(0, -1);
   }
 
   function onUndoClick(){
