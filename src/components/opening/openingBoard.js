@@ -9,70 +9,29 @@ function OpeningBoard(opening) {
   const [fen, setFen] = useState(null);
   const [history, setHistory] = useState(null);
   const [orientation, setOrientation] = useState(false);
-  const [currentHistoryPosition, setCurrentHistoryPosition] = useState(null);
+  const [historyPosition, setHistoryPosition] = useState(null);
 
   useEffect(() => {
     chess.load_pgn(opening.opening.sequence);
     const chessHistory = chess.history();
     setHistory(chessHistory);
-    setCurrentHistoryPosition(chessHistory.length);
+    setHistoryPosition(chessHistory.length);
     setFen(chess.fen())
   }, [chess, opening.opening.sequence]);
 
-  function previousClick() {
-    if (currentHistoryPosition === 0) {
-      return;
-    }
-    const newCurrentHistoryPosition = currentHistoryPosition - 1
-    const sequence = history.slice(0, newCurrentHistoryPosition);
-    const nextFen = getFenForSequence(sequence);
-    setCurrentHistoryPosition(newCurrentHistoryPosition);
-    setFen(nextFen);
+  useEffect(() => {
+    document.addEventListener('keydown', keydownFunc, false);
+    return () => document.removeEventListener('keydown', keydownFunc, false);
+  });
+
+  function goToPosition(position) {
+      const sequence = history.slice(0, position);
+      const positionFen = generateFen(sequence);
+      setHistoryPosition(position);
+      setFen(positionFen);
   }
 
-  function nextClick() {
-    if(currentHistoryPosition === history.length) {
-      return;
-    }
-    const newCurrentHistoryPosition = currentHistoryPosition + 1
-    const sequence = history.slice(0, newCurrentHistoryPosition);
-    const nextFen = getFenForSequence(sequence);
-    setCurrentHistoryPosition(newCurrentHistoryPosition);
-    setFen(nextFen);
-  }
-
-  function endSequence() {
-    const newCurrentHistoryPosition = history.length
-    const sequence = history.slice(0, newCurrentHistoryPosition);
-    const nextFen = getFenForSequence(sequence);
-    setCurrentHistoryPosition(newCurrentHistoryPosition);
-    setFen(nextFen);
-  }
-
-  function beginningSequence() {
-    const newCurrentHistoryPosition = 0
-    const sequence = history.slice(0, newCurrentHistoryPosition);
-    const nextFen = getFenForSequence(sequence);
-    setCurrentHistoryPosition(newCurrentHistoryPosition);
-    setFen(nextFen);
-  }
-
-  function handleKeyPress(event) {
-    if (event.key === 'ArrowUp') {
-      endSequence()
-    }
-    if (event.key === 'ArrowDown') {
-      beginningSequence()
-    }
-    if (event.key === 'ArrowLeft') {
-      previousClick()
-    }
-    if (event.key === 'ArrowRight') {
-      nextClick()
-    }
-  }
-
-  function getFenForSequence(sequence){
+  function generateFen(sequence){
     const nextChess = new Chess();
     sequence.forEach((move, i) => {
       nextChess.move(move);
@@ -80,8 +39,53 @@ function OpeningBoard(opening) {
     return nextChess.fen()
   }
 
+  function previousPosition() {
+    if (historyPosition === 0) {
+      return;
+    }
+    goToPosition(historyPosition - 1);
+  }
+
+  function nextPosition() {
+    if(historyPosition === history.length) {
+      return;
+    }
+    goToPosition(historyPosition + 1);
+  }
+
+  function endPosition() {
+    goToPosition(history.length);
+  }
+
+  function startingPosition() {
+    goToPosition(0);
+  }
+
+  function keydownFunc(e){
+    switch(e.keyCode){
+      case 37:
+        previousPosition();
+        break;
+      case 38:
+        startingPosition();
+        break;
+      case 39:
+        nextPosition();
+        break;
+      case 40:
+        endPosition();
+        break;
+      default:
+        break;
+    }
+  }
+
   function onOrientationClick(){
     setOrientation(!orientation);
+  }
+
+  function onSequenceClick(e){
+    goToPosition(e.target.dataset.position);
   }
 
   if (!fen) return null;
@@ -97,9 +101,22 @@ function OpeningBoard(opening) {
           }
         />
       </BoardHolder>
+      <SequenceHolder>
+        {
+          history.map((hist, i) => {
+            let seq = null;
+            if(!(i % 2)){
+              seq = `${i / 2 + 1}.${hist}`;
+            } else {
+              seq = hist;
+            }
+            return(<Sequence key={i} data-position={i + 1} onClick={onSequenceClick} active={(i + 1) === historyPosition}>{seq}</Sequence>)
+          })
+        }
+      </SequenceHolder>
       <ButtonHolder>
-        <UndoButton onClick={previousClick}>Previous</UndoButton>
-        <UndoButton onClick={nextClick}>Next</UndoButton>
+        <UndoButton onClick={previousPosition}>Previous</UndoButton>
+        <UndoButton onClick={nextPosition}>Next</UndoButton>
         <OrientationButton onClick={onOrientationClick}>Orientation</OrientationButton>
       </ButtonHolder>
     </Wrapper>
@@ -128,6 +145,25 @@ const BoardHolder = styled.div`
 
   .cg-custom-svgs {
     display: none;
+  }
+`;
+
+const SequenceHolder = styled.div`
+  margin-top: 32px;
+  background-color: ${props => props.theme.colors.black};
+  border: 1px solid ${props => props.theme.colors.lightgrey};
+  border-radius: 4px;
+  color: ${props => props.theme.colors.white};
+  font-weight: bold;
+  padding: 4px;
+  overflow: scroll;
+`;
+
+const Sequence = styled.span`
+  margin-left: 8px;
+  cursor: pointer;
+  ${p => p.active ?
+      `border-bottom: 2px solid ${p.theme.colors.green}` : null
   }
 `;
 
