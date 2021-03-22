@@ -7,7 +7,7 @@ function Menu() {
   return (
     <Wrapper>
       <TitleLink to='/'>
-        <Title>chess openings</Title>
+        <Title>chess opener</Title>
       </TitleLink>
       <Search />
     </Wrapper>
@@ -29,7 +29,7 @@ const TitleLink = styled(NavLink)`
   color: ${props => props.theme.colors.white};
   text-align: center;
   font-weight: bold;
-  letter-spacing: 4px; 
+  letter-spacing: 4px;
 `;
 
 const Title = styled.h1`

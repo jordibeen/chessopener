@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
+
+import { ReactComponent as BlitzIcon } from 'assets/icons/blitz.svg';
+import { ReactComponent as RapidIcon } from 'assets/icons/rapid.svg';
+import { ReactComponent as ClassicalIcon } from 'assets/icons/classical.svg';
+import LichessIcon from 'assets/icons/lichess.png';
 
 function OpeningInformation(opening) {
   const [stats, setStats] = useState(null);
@@ -23,11 +29,20 @@ function OpeningInformation(opening) {
       })
   }, [opening])
 
-  console.log(stats);
-  console.log(games);
+  function getResult(winner) {
+    if(winner === 'draw'){
+      return '½ - ½';
+    } else if(winner === 'white'){
+      return '1 - 0';
+    } else if(winner === 'black') {
+      return '0 - 1';
+    }
+  }
+
   if(!stats || !games) {
     return null;
   }
+
   return (
     <Wrapper>
       <OpeningDetailsWrapper>
@@ -40,24 +55,49 @@ function OpeningInformation(opening) {
         </NameSequenceWrapper>
       </OpeningDetailsWrapper>
       <LichessStatsWrapper>
-        <p>Average rating: {stats.averageRating}</p>
-        <p>Amount played: {stats.amountPlayed}</p>
-        <p>White wins: {stats.whiteWins}</p>
-        <p>Draws: {stats.draws}</p>
-        <p>Black wins: {stats.blackWins}</p>
+        <LichessStatsKeys>
+          <p>Average rating</p>
+          <p>Amount played</p>
+          <p>White wins</p>
+          <p>Draws</p>
+          <p>Black wins</p>
+        </LichessStatsKeys>
+        <LichessStatsValues>
+          <p>{stats.averageRating}</p>
+          <p>{stats.amountPlayed}</p>
+          <p>{stats.whiteWins}</p>
+          <p>{stats.draws}</p>
+          <p>{stats.blackWins}</p>
+        </LichessStatsValues>
       </LichessStatsWrapper>
       <LichessGamesWrapper>
         {
           games.map((game) => {
             return (
-              <LichessLink target='_blank' rel="noopener noreferrer" href={`https://lichess.org/${game.lichessId}`} >
-                <LichessGame>
-                  <p>{game.whiteName} ({game.whiteRating}) vs {game.blackName} ({game.blackRating})</p>
-                  <p>Type: {game.speed}</p>
-                  <p>Date: {game.playedAt}</p>
-                  <p>Winner: {game.winner}</p>
-                </LichessGame>
-              </LichessLink>
+              <LichessGame>
+                <LichessType>
+                  {
+                    game.speed === 'blitz' ? <Blitz/> :
+                    game.speed === 'rapid' ? <Rapid/> :
+                    game.speed === 'classical' ? <Classical/> : null
+                  }
+                </LichessType>
+                <LichessPlayers>
+                  <LichessWhitePlayer winner={game.winner === 'white'}>{game.whiteName} ({game.whiteRating})</LichessWhitePlayer>
+                  <LichessBlackPlayer winner={game.winner === 'black'}>{game.blackName} ({game.blackRating})</LichessBlackPlayer>
+                </LichessPlayers>
+                <LichessResultWrapper>
+                  <LichessResult winner={game.winner}>{getResult(game.winner)}</LichessResult>
+                </LichessResultWrapper>
+                <LichessDate>
+                  <p>{moment(game.playedAt).format('MMM Do YYYY')}</p>
+                </LichessDate>
+                <LichessLinkWrapper>
+                  <LichessLink target='_blank' rel="noopener noreferrer" href={`https://lichess.org/${game.lichessId}`} >
+                    <LichessIconWrapper imageUrl={LichessIcon} />
+                  </LichessLink>
+                </LichessLinkWrapper>
+              </LichessGame>
             )
           })
         }
@@ -122,26 +162,126 @@ const Sequence = styled.span`
 
 const LichessStatsWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 16px 0;
+  border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
+`;
+
+const LichessStatsKeys = styled.div`
+  width: 50%;
+  color: ${props => props.theme.colors.lightGrey};
+  text-align: center;
+`;
+
+const LichessStatsValues = styled.div`
+  width: 50%;
+  color: ${props => props.theme.colors.white};
+  text-align: center;
 `;
 
 const LichessGamesWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 16px 0;
   overflow: scroll;
+`;
+
+const LichessLinkWrapper = styled.div`
+  width: 5%;
 `;
 
 const LichessLink = styled.a`
   text-decoration: none;
-  color: ${props => props.theme.colors.lightgrey}
+`;
+
+const LichessIconWrapper = styled.div`
+  background-image: url(${p => p.imageUrl});
+  background-size: cover;
+  background-position: center center;
+  width: 24px;
+  height: 24px;
 `;
 
 const LichessGame = styled.div`
+  display: flex;
+  align-items: center;
   border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
+  font-size: 18px;
+  height: 64px;
+  color: ${props => props.theme.colors.white};
+`;
+
+const LichessType = styled.div`
+  width: 10%;
+  text-align: center;
+`;
+
+const Blitz = styled(BlitzIcon)`
+  width: 32px;
+  height: 32px;
+  fill: ${props => props.theme.colors.white};
+`;
+
+const Rapid = styled(RapidIcon)`
+  width: 32px;
+  height: 32px;
+  fill: ${props => props.theme.colors.white};
+`;
+
+const Classical = styled(ClassicalIcon)`
+  width: 32px;
+  height: 32px;
+  fill: ${props => props.theme.colors.white};
+`;
+
+const LichessPlayers = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+`;
+
+const LichessWhitePlayer = styled.div`
+  font-weight: ${props => props.winner ? 'bold' : 'none'};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 50%;
+`;
+
+const LichessBlackPlayer = styled.div`
+  font-weight: ${props => props.winner ? 'bold' : 'none'};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 50%;
+`;
+
+const LichessResultWrapper = styled.div`
+  margin-left: 8px;
+  width: 10%;
+`;
+
+const LichessResult = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 32px;
+  border-radius: 2px;
+  margin-left: 8px;
+  background: ${props =>
+      props.winner === 'white' ? props.theme.colors.white :
+      props.winner === 'black' ? props.theme.colors.black :
+      props.winner === 'draw' ? '#333' : 'none'
+  };
+  color: ${props =>
+      props.winner === 'white' ? props.theme.colors.black :
+      props.winner === 'black' ? props.theme.colors.white :
+      props.winner === 'draw' ? props.theme.colors.lightGrey : props.theme.colors.white
+
+  };
+`;
+
+const LichessDate = styled.div`
+  width: 20%;
 `;
 
 export default OpeningInformation;
