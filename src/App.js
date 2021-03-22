@@ -9,6 +9,7 @@ import Home from 'components/home';
 import Menu from 'components/menu';
 import About from 'components/about';
 import Opening from 'components/opening';
+import Game from 'components/game';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Menu />
         <Route exact path="/" component={Home} />
         <Route exact path="/about" component={About} />
+        <Route path="/games/:id" component={Game} />
         <Route path="/openings/:id" component={Opening} />
       </BrowserRouter>
     </ThemeProvider>

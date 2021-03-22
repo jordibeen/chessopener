@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import { NavLink } from 'react-router-dom';
 
 import { ReactComponent as BlitzIcon } from 'assets/icons/blitz.svg';
 import { ReactComponent as RapidIcon } from 'assets/icons/rapid.svg';
@@ -74,30 +75,32 @@ function OpeningInformation(opening) {
         {
           games.map((game) => {
             return (
-              <LichessGame>
-                <LichessType>
-                  {
-                    game.speed === 'blitz' ? <Blitz/> :
-                    game.speed === 'rapid' ? <Rapid/> :
-                    game.speed === 'classical' ? <Classical/> : null
-                  }
-                </LichessType>
-                <LichessPlayers>
-                  <LichessWhitePlayer winner={game.winner === 'white'}>{game.whiteName} ({game.whiteRating})</LichessWhitePlayer>
-                  <LichessBlackPlayer winner={game.winner === 'black'}>{game.blackName} ({game.blackRating})</LichessBlackPlayer>
-                </LichessPlayers>
-                <LichessResultWrapper>
-                  <LichessResult winner={game.winner}>{getResult(game.winner)}</LichessResult>
-                </LichessResultWrapper>
-                <LichessDate>
-                  <p>{moment(game.playedAt).format('MMM Do YYYY')}</p>
-                </LichessDate>
-                <LichessLinkWrapper>
-                  <LichessLink target='_blank' rel="noopener noreferrer" href={`https://lichess.org/${game.lichessId}`} >
-                    <LichessIconWrapper imageUrl={LichessIcon} />
-                  </LichessLink>
-                </LichessLinkWrapper>
-              </LichessGame>
+              <GameLink to={`/games/${game.id}`}>
+                <LichessGame>
+                  <LichessType>
+                    {
+                      game.speed === 'blitz' ? <Blitz/> :
+                      game.speed === 'rapid' ? <Rapid/> :
+                      game.speed === 'classical' ? <Classical/> : null
+                    }
+                  </LichessType>
+                  <LichessPlayers>
+                    <LichessWhitePlayer winner={game.winner === 'white'}>{game.whiteName} ({game.whiteRating})</LichessWhitePlayer>
+                    <LichessBlackPlayer winner={game.winner === 'black'}>{game.blackName} ({game.blackRating})</LichessBlackPlayer>
+                  </LichessPlayers>
+                  <LichessResultWrapper>
+                    <LichessResult winner={game.winner}>{getResult(game.winner)}</LichessResult>
+                  </LichessResultWrapper>
+                  <LichessDate>
+                    <p>{moment(game.playedAt).format('MMM Do YYYY')}</p>
+                  </LichessDate>
+                  <LichessLinkWrapper>
+                    <LichessLink target='_blank' rel="noopener noreferrer" href={`https://lichess.org/${game.lichessId}`} >
+                      <LichessIconWrapper imageUrl={LichessIcon} />
+                    </LichessLink>
+                  </LichessLinkWrapper>
+                </LichessGame>
+              </GameLink>
             )
           })
         }
@@ -200,6 +203,10 @@ const LichessIconWrapper = styled.div`
   height: 24px;
 `;
 
+const GameLink = styled(NavLink)`
+  text-decoration: none;
+`;
+
 const LichessGame = styled.div`
   display: flex;
   align-items: center;
@@ -270,7 +277,7 @@ const LichessResult = styled.div`
   background: ${props =>
       props.winner === 'white' ? props.theme.colors.white :
       props.winner === 'black' ? props.theme.colors.black :
-      props.winner === 'draw' ? '#333' : 'none'
+      props.winner === 'draw' ? props.theme.colors.lightgrey : 'none'
   };
   color: ${props =>
       props.winner === 'white' ? props.theme.colors.black :
