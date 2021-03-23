@@ -248,10 +248,6 @@ const ModalSearchResult = styled.div`
     padding: 16px 0;
 `;
 
-const Match = styled.span`
-  color: ${props => props.theme.colors.green}
-`;
-
 const Link = styled(NavLink)`
   text-decoration: none;
   color: ${props => props.theme.colors.green};

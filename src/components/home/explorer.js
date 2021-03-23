@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import Chessground from 'react-chessground';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import { SET_EXPLORER_SEQUENCE } from 'redux/reducers/explorer';
 
 const Chess = require("chess.js");
 
+
 function Explorer(opening) {
+  const dispatch = useDispatch();
+  const storedExplorerSequence = useSelector(state => state.explorer.sequence);
+
   const [chess] = useState(new Chess());
+  const [restore, setRestore] = useState(storedExplorerSequence ? true : false);
   const [lastMove, setLastMove] = useState();
-  const [sequence, setSequence] = useState();
+  const [sequence, setSequence] = useState(storedExplorerSequence);
   const [count, setCount] = useState(0);
   const [openings, setOpenings] = useState([]);
   const [orientation, setOrientation] = useState(false);
@@ -30,9 +36,13 @@ function Explorer(opening) {
     .then((result) => {
       setCount(result.count);
       setOpenings(result.rows);
+      dispatch({
+        type: SET_EXPLORER_SEQUENCE,
+        payload: sequence
+      });
     }, (error) => {
     })
-  }, [sequence]);
+  }, [sequence, dispatch]);
 
   useEffect(() => {
     const page = Math.ceil(openings.length / limit);
@@ -43,7 +53,15 @@ function Explorer(opening) {
       setHasMore(false);
     }
     setOffset(nextOffset);
-}, [openings, count])
+  }, [openings, count])
+
+  useEffect(() => {
+    if(restore){
+      chess.load_pgn(sequence);
+      setRestore(false);
+      setFen(chess.fen());
+    }
+  }, [restore, chess, sequence])
 
   function onMove(from, to) {
     const legalMoves = chess.moves( { verbose: true })
