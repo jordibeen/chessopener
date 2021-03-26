@@ -169,7 +169,7 @@ function Search() {
                 openings.map((opening) => {
                   return (
                     <ModalSearchResult key={opening.id} >
-                      <Link to={`/openings/${opening.id}`} onClick={closeModal}>
+                      <Link to={`/openings/${opening.slug}`} onClick={closeModal}>
                         <ModalSearchResultName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)}</ModalSearchResultName>
                         <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
                       </Link>

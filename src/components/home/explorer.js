@@ -177,7 +177,7 @@ function Explorer(opening) {
                 openings.map((opening) => {
                   return (
                     <MatchingOpeningResult key={opening.id} >
-                      <Link to={`/openings/${opening.id}`}>
+                      <Link to={`/openings/${opening.slug}`}>
                         <MatchingOpeningResultName>[{opening.eco}] {opening.name}</MatchingOpeningResultName>
                         { getSequenceMatchString(sequence, opening.sequence) }
                       </Link>

@@ -6,16 +6,16 @@ import OpeningInformation from './openingInformation';
 
 function Opening({history, location, match}) {
   const [opening, setOpening] = useState(null);
-  const id = match.params.id;
+  const slug = match.params.slug;
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/${id}`)
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/s/${slug}`)
       .then(res => res.json())
       .then((result) => {
         setOpening(result);
       }, (error) => {
       })
-  }, [id])
+  }, [slug])
 
   if(!opening) return null;
 

@@ -19,7 +19,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/about" component={About} />
         <Route path="/games/:id" component={Game} />
-        <Route path="/openings/:id" component={Opening} />
+        <Route path="/openings/:slug" component={Opening} />
       </BrowserRouter>
     </ThemeProvider>
   );
