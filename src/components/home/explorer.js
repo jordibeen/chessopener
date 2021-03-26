@@ -154,7 +154,7 @@ function Explorer(opening) {
         </ButtonHolder>
       </BoardWrapper>
       <InformationWrapper id='InformationWrapper'>
-        <SequenceWrapper>
+        <Header>
           <Sequence>{
             sequence ?
               sequence :
@@ -164,7 +164,7 @@ function Explorer(opening) {
             count ?
             <SequenceCount>{count} results</SequenceCount> : null
           }
-        </SequenceWrapper>
+        </Header>
 
         <MatchingOpeningsWrapper id='MatchingOpeningsWrapper'>
           <InfiniteScroll
@@ -201,7 +201,7 @@ const Wrapper = styled.div`
 `;
 
 const BoardWrapper = styled.div`
-  width: 50%;
+  width: 60%;
   max-width: 32vw;
 `;
 
@@ -269,17 +269,16 @@ const OrientationButton = styled.button`
 `;
 
 const InformationWrapper = styled.div`
-  width: 50%;
-  max-width: 32vw;
-  height: 100%;
-  background-color: ${props => props.theme.colors.componentBackground};
   display: flex;
   flex-direction: column;
+  width: 40%;
+  height: 100%;
+  background-color: ${props => props.theme.colors.componentBackground};
   border: 1px solid ${props => props.theme.colors.lightgrey};
   border-radius: 12px;
 `;
 
-const SequenceWrapper = styled.div`
+const Header = styled.div`
   background-color: ${props => props.theme.colors.black};
   height: 64px;
   padding: 16px;

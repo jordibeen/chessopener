@@ -41,12 +41,12 @@ function Opening({history, location, match}) {
 }
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: calc(100% - 64px);
-  padding: 32px 0;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  height: calc(100% - 64px);
+  width: 100%;
+  padding: 32px 0;
 
   @media (${props => props.theme.breakpoints.mobile}) {
     display: block;

@@ -111,16 +111,16 @@ function OpeningBoard(opening) {
         }
       </SequenceHolder>
       <ButtonHolder>
-        <UndoButton onClick={previousPosition}>Previous</UndoButton>
-        <UndoButton onClick={nextPosition}>Next</UndoButton>
-        <OrientationButton onClick={onOrientationClick}>Orientation</OrientationButton>
+        <PreviousButton onClick={previousPosition}>Previous</PreviousButton>
+        <NextButton onClick={nextPosition}>Next</NextButton>
+        <OrientationButton onClick={onOrientationClick}>Switch Orientation</OrientationButton>
       </ButtonHolder>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  width: 45%;
+  width: 60%;
   max-width: 32vw;
 `;
 
@@ -150,13 +150,13 @@ const SequenceHolder = styled.div`
   border: 1px solid ${props => props.theme.colors.lightgrey};
   border-radius: 4px;
   color: ${props => props.theme.colors.white};
-  font-weight: bold;
-  padding: 4px;
+  padding: 8px;
   overflow: scroll;
+  font-weight: bold;
 `;
 
 const Sequence = styled.span`
-  margin-left: 8px;
+  margin-left: 12px;
   cursor: pointer;
   ${p => p.active ?
       `border-bottom: 2px solid ${p.theme.colors.green}` : null
@@ -164,12 +164,13 @@ const Sequence = styled.span`
 `;
 
 const ButtonHolder = styled.div`
-  margin-top: 32px;
+  margin-top: 16px;
   display: flex;
   justify-content: center;
 `;
 
-const UndoButton = styled.button`
+
+const Button = styled.button`
   padding: 16px;
   outline: none;
   border: none;
@@ -181,29 +182,21 @@ const UndoButton = styled.button`
   letter-spacing: 1.5px;
   font-size: 16px;
   cursor: pointer;
-  margin-right: 8px;
 
   :hover {
      background-color: ${props => props.theme.colors.componentBackgroundHighlight};
    }
 `;
 
-const OrientationButton = styled.button`
-  padding: 16px;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  background-color: ${props => props.theme.colors.black};
-  color: ${props => props.theme.colors.white};
-  font-family: della-respira;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-  font-size: 16px;
-  cursor: pointer;
+const PreviousButton = styled(Button)`
+  margin-right: 16px;
+`;
 
-  :hover {
-     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
-   }
+const NextButton = styled(Button)`
+  margin-right: 16px;
+`;
+
+const OrientationButton = styled(Button)`
 `;
 
 export default OpeningBoard;

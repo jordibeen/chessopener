@@ -25,7 +25,7 @@ function OpeningInformation(opening) {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 40%;
   height: 100%;
   background-color: ${props => props.theme.colors.componentBackground};
   border: 1px solid ${props => props.theme.colors.lightgrey};
