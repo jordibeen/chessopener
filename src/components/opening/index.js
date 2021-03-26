@@ -3,8 +3,12 @@ import styled from 'styled-components';
 
 import OpeningBoard from './openingBoard';
 import OpeningInformation from './openingInformation';
+import Loader from "../common/loader";
+import Error from "../common/error";
 
 function Opening({history, location, match}) {
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [opening, setOpening] = useState(null);
   const slug = match.params.slug;
 
@@ -13,11 +17,20 @@ function Opening({history, location, match}) {
       .then(res => res.json())
       .then((result) => {
         setOpening(result);
+        setIsLoaded(true);
       }, (error) => {
+        setError(error);
+        setIsLoaded(true);
       })
   }, [slug])
 
-  if(!opening) return null;
+  if(!isLoaded) {
+    return <Loader />
+  }
+
+  if(error) {
+    return <Error />
+  }
 
   return (
     <Wrapper>

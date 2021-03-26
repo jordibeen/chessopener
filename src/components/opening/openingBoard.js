@@ -84,10 +84,6 @@ function OpeningBoard(opening) {
     setOrientation(!orientation);
   }
 
-  function onSequenceClick(e){
-    goToPosition(e.target.dataset.position);
-  }
-
   if (!fen) return null;
 
   return (
@@ -110,7 +106,7 @@ function OpeningBoard(opening) {
             } else {
               seq = hist;
             }
-            return(<Sequence key={i} data-position={i + 1} onClick={onSequenceClick} active={(i + 1) === historyPosition}>{seq}</Sequence>)
+            return(<Sequence key={i} onClick={() => {goToPosition(i + 1)}} active={(i + 1) === historyPosition}>{seq}</Sequence>)
           })
         }
       </SequenceHolder>

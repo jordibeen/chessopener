@@ -3,7 +3,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import theme from 'theme';
-import 'assets/chessboard/style.css'
+import 'assets/chessboard/style.css';
+import 'assets/loader/react-spinner-loader.css';
 
 import Home from 'components/home';
 import Menu from 'components/menu';

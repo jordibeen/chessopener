@@ -7,7 +7,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import useDebounce from 'helpers/useDebounce';
 
 const modalStyles = {
-
   overlay: {
       backgroundColor: 'rgba(0, 0, 0, 0.75)',
   },
