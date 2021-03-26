@@ -111,7 +111,6 @@ function OpeningInformation(opening) {
 
 const Wrapper = styled.div`
   width: 50%;
-  max-width: 32vw;
   height: 100%;
   background-color: ${props => props.theme.colors.componentBackground};
   display: flex;
@@ -187,22 +186,6 @@ const LichessGamesWrapper = styled.div`
   overflow: scroll;
 `;
 
-const LichessLinkWrapper = styled.div`
-  width: 5%;
-`;
-
-const LichessLink = styled.a`
-  text-decoration: none;
-`;
-
-const LichessIconWrapper = styled.div`
-  background-image: url(${p => p.imageUrl});
-  background-size: cover;
-  background-position: center center;
-  width: 24px;
-  height: 24px;
-`;
-
 const GameLink = styled(NavLink)`
   text-decoration: none;
 `;
@@ -214,12 +197,9 @@ const LichessGame = styled.div`
   font-size: 18px;
   height: 64px;
   color: ${props => props.theme.colors.white};
+  flex: 1;
 `;
 
-const LichessType = styled.div`
-  width: 10%;
-  text-align: center;
-`;
 
 const Blitz = styled(BlitzIcon)`
   width: 32px;
@@ -239,41 +219,48 @@ const Classical = styled(ClassicalIcon)`
   fill: ${props => props.theme.colors.white};
 `;
 
-const LichessPlayers = styled.div`
+const TableItem = styled.div`
+  padding: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const LichessType = styled(TableItem)`
+  flex: 0.1;
+  text-align: center;
+`;
+
+const LichessPlayers = styled(TableItem)`
   display: flex;
   justify-content: space-between;
-  width: 60%;
+  flex: 0.6;
 `;
 
 const LichessWhitePlayer = styled.div`
   font-weight: ${props => props.winner ? 'bold' : 'none'};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 50%;
+  color: ${props => props.winner ? props.theme.colors.green : props.theme.colors.white};
+  flex: 0.5;
 `;
 
 const LichessBlackPlayer = styled.div`
   font-weight: ${props => props.winner ? 'bold' : 'none'};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 50%;
+  color: ${props => props.winner ? props.theme.colors.green : props.theme.colors.white};
+  flex: 0.5;
 `;
 
-const LichessResultWrapper = styled.div`
-  margin-left: 8px;
-  width: 10%;
+const LichessResultWrapper = styled(TableItem)`
+  flex: 0.1;
 `;
 
 const LichessResult = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 2px;
+  font-size: 16px;
   width: 48px;
   height: 32px;
-  border-radius: 2px;
-  margin-left: 8px;
   background: ${props =>
       props.winner === 'white' ? props.theme.colors.white :
       props.winner === 'black' ? props.theme.colors.black :
@@ -287,8 +274,27 @@ const LichessResult = styled.div`
   };
 `;
 
-const LichessDate = styled.div`
-  width: 20%;
+const LichessDate = styled(TableItem)`
+  flex: 0.1;
+`;
+
+const LichessLinkWrapper = styled(TableItem)`
+  flex: 0.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LichessLink = styled.a`
+  text-decoration: none;
+`;
+
+const LichessIconWrapper = styled.div`
+  background-image: url(${p => p.imageUrl});
+  background-size: cover;
+  background-position: center center;
+  width: 24px;
+  height: 24px;
 `;
 
 export default OpeningInformation;

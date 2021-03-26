@@ -124,7 +124,7 @@ function OpeningBoard(opening) {
 }
 
 const Wrapper = styled.div`
-  width: 50%;
+  width: 45%;
   max-width: 32vw;
 `;
 
