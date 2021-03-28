@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Chessground from 'react-chessground';
 
+import Button from "../common/button";
+
 const Chess = require("chess.js");
 
 function OpeningBoard(opening) {
@@ -153,6 +155,7 @@ const SequenceHolder = styled.div`
   padding: 8px;
   overflow: scroll;
   font-weight: bold;
+  word-break: break-all;
 `;
 
 const Sequence = styled.span`
@@ -164,28 +167,9 @@ const Sequence = styled.span`
 `;
 
 const ButtonHolder = styled.div`
-  margin-top: 16px;
+  margin-top: 32px;
   display: flex;
   justify-content: center;
-`;
-
-
-const Button = styled.button`
-  padding: 16px;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  background-color: ${props => props.theme.colors.black};
-  color: ${props => props.theme.colors.white};
-  font-family: della-respira;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-  font-size: 16px;
-  cursor: pointer;
-
-  :hover {
-     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
-   }
 `;
 
 const PreviousButton = styled(Button)`

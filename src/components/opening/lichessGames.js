@@ -51,7 +51,7 @@ function OpeningInformation(opening) {
         {
           games.map((game) => {
             return (
-              <GameLink to={`/games/${game.id}`}>
+              <GameLink to={`/game/${game.id}`}>
                 <LichessGame>
                   <LichessType>
                     {

@@ -7,6 +7,7 @@ import 'assets/chessboard/style.css';
 import 'assets/loader/react-spinner-loader.css';
 
 import Home from 'components/home';
+import Explorer from 'components/explorer';
 import Menu from 'components/menu';
 import About from 'components/about';
 import Opening from 'components/opening';
@@ -18,9 +19,10 @@ function App() {
       <BrowserRouter>
         <Menu />
         <Route exact path="/" component={Home} />
+        <Route exact path="/explorer" component={Explorer} />
         <Route exact path="/about" component={About} />
-        <Route path="/games/:id" component={Game} />
-        <Route path="/openings/:slug" component={Opening} />
+        <Route path="/game/:id" component={Game} />
+        <Route path="/opening/:slug" component={Opening} />
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Chessground from 'react-chessground';
 
+import Button from "../common/button";
+
 const Chess = require("chess.js");
 
 function GameBoard(game) {
   const [chess] = useState(new Chess());
+  const [initialPgnLoaded, setInitialPgnLoaded] = useState(false);
   const [fen, setFen] = useState(null);
   const [history, setHistory] = useState(null);
   const [orientation, setOrientation] = useState(false);
@@ -16,8 +19,16 @@ function GameBoard(game) {
     const chessHistory = chess.history();
     setHistory(chessHistory);
     setHistoryPosition(chessHistory.length);
-    setFen(chess.fen())
+    setInitialPgnLoaded(true);
   }, [chess, game.game.pgn]);
+
+  useEffect(() => {
+    const openingSequence = game.game.opening.sequence;
+    const openingSequencePosition = openingSequence.split(' ').length;
+    if(initialPgnLoaded){
+      goToPosition(openingSequencePosition);
+    }
+  }, [initialPgnLoaded]);
 
   useEffect(() => {
     document.addEventListener('keydown', keydownFunc, false);
@@ -25,10 +36,10 @@ function GameBoard(game) {
   });
 
   function goToPosition(position) {
-      const sequence = history.slice(0, position);
-      const positionFen = generateFen(sequence);
-      setHistoryPosition(position);
-      setFen(positionFen);
+    const sequence = history.slice(0, position);
+    const positionFen = generateFen(sequence);
+    setHistoryPosition(position);
+    setFen(positionFen);
   }
 
   function generateFen(sequence){
@@ -84,10 +95,6 @@ function GameBoard(game) {
     setOrientation(!orientation);
   }
 
-  function onSequenceClick(e){
-    goToPosition(e.target.dataset.position);
-  }
-
   if (!fen) return null;
 
   return (
@@ -110,7 +117,7 @@ function GameBoard(game) {
             } else {
               seq = hist;
             }
-            return(<Sequence key={i} data-position={i + 1} onClick={onSequenceClick} active={(i + 1) === historyPosition}>{seq}</Sequence>)
+            return(<Sequence key={i} onClick={() => {goToPosition(i + 1)}} active={(i + 1) === historyPosition}>{seq}</Sequence>)
           })
         }
       </SequenceHolder>
@@ -124,7 +131,7 @@ function GameBoard(game) {
 }
 
 const Wrapper = styled.div`
-  width: 50%;
+  width: 60%;
   max-width: 32vw;
 `;
 
@@ -154,13 +161,14 @@ const SequenceHolder = styled.div`
   border: 1px solid ${props => props.theme.colors.lightgrey};
   border-radius: 4px;
   color: ${props => props.theme.colors.white};
-  font-weight: bold;
-  padding: 4px;
+  padding: 8px;
   overflow: scroll;
+  font-weight: bold;
+  word-break: break-all;
 `;
 
 const Sequence = styled.span`
-  margin-left: 8px;
+  margin-left: 12px;
   cursor: pointer;
   ${p => p.active ?
       `border-bottom: 2px solid ${p.theme.colors.green}` : null
@@ -173,41 +181,11 @@ const ButtonHolder = styled.div`
   justify-content: center;
 `;
 
-const UndoButton = styled.button`
-  padding: 16px;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  background-color: ${props => props.theme.colors.black};
-  color: ${props => props.theme.colors.white};
-  font-family: della-respira;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-right: 8px;
-
-  :hover {
-     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
-   }
+const UndoButton = styled(Button)`
+  margin-right: 16px;
 `;
 
-const OrientationButton = styled.button`
-  padding: 16px;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  background-color: ${props => props.theme.colors.black};
-  color: ${props => props.theme.colors.white};
-  font-family: della-respira;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-  font-size: 16px;
-  cursor: pointer;
-
-  :hover {
-     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
-   }
+const OrientationButton = styled(Button)`
 `;
 
 export default GameBoard;
