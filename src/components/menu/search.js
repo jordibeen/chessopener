@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 import { NavLink } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+import Loader from "../common/loader";
+
 import useDebounce from 'helpers/useDebounce';
 
 const modalStyles = {
@@ -29,30 +31,31 @@ function Search() {
   const [modalIsOpen,setIsOpen] = useState(false);
   const [count, setCount] = useState(0);
   const [openings, setOpenings] = useState([]);
-  const menuSearchInputRef = createRef();
-  const modalSearchInputRef = createRef();
   const limit = 50;
   const [hasMore, setHasMore] = useState(false);
   const [offset, setOffset] = useState(false);
+  const menuInput = createRef();
+  const modalInput = createRef();
 
   useEffect(() => {
-    if(!debouncedSearch) {
+    if(debouncedSearch) {
+      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=${limit}`)
+        .then(res => res.json())
+        .then((result) => {
+          setCount(result.count);
+          setOpenings(result.rows);
+        }, (error) => {
+      })
+    } else {
       setCount(0);
       setOpenings([]);
-      return;
     }
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=${limit}`)
-      .then(res => res.json())
-      .then((result) => {
-        setOpenings(result.rows);
-        setCount(result.count);
-      }, (error) => {
-    })
+
   }, [debouncedSearch]);
 
   useEffect(() => {
-    document.addEventListener('keydown', escapeFunc, false);
-    return () => document.removeEventListener('keydown', escapeFunc, false);
+    document.addEventListener('keydown', keyDown, false);
+    return () => document.removeEventListener('keydown', keyDown, false);
   });
 
   useEffect(() => {
@@ -66,11 +69,12 @@ function Search() {
     setOffset(nextOffset);
   }, [openings, count])
 
-  function escapeFunc(e) {
+  function keyDown(e) {
     if (e.keyCode === 27) {
       setIsOpen(!modalIsOpen)
     }
   }
+
   function onChange(event) {
     setSearch(event.target.value);
     openModal();
@@ -78,18 +82,18 @@ function Search() {
 
   function openModal() {
     setIsOpen(true);
-    menuSearchInputRef.current.blur();
+    menuInput.current.blur();
   }
 
   function afterOpenModal() {
-    modalSearchInputRef.current.focus();
+    modalInput.current.focus();
   }
 
   function closeModal(){
     setIsOpen(false);
   }
 
-  function fetchData(){
+  function fetchMore(){
     fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?search=${debouncedSearch}&limit=${limit}&offset=${offset}`)
     .then(res => res.json())
     .then((result) => {
@@ -128,7 +132,7 @@ function Search() {
   return (
     <Wrapper>
       <SearchInput
-        ref={menuSearchInputRef}
+        ref={menuInput}
         type="text"
         placeholder="press esc to search"
         value={search}
@@ -143,42 +147,43 @@ function Search() {
         style={modalStyles}
         contentLabel="Search results"
       >
-        <ModalSearchInputWrapper>
-          <ModalSearchInput
-            ref={modalSearchInputRef}
+        <InputWrapper>
+          <Input
+            ref={modalInput}
             type="text"
             value={search}
             onChange={onChange}
           />
-          { count ?
-              <ModalSearchCount>
-                {count} results
-              </ModalSearchCount> : null
+          {
+            count ?
+            <SearchCount>{count} results</SearchCount>
+            : null
           }
-        </ModalSearchInputWrapper>
-        <ModalSearchWrapper id='ModalSearchWrapper'>
-          <ModalSearchResults>
+        </InputWrapper>
+        <ResultWrapper id='ResultWrapper'>
+          <ResultHolder>
             <InfiniteScroll
               dataLength={openings.length}
-              next={fetchData}
+              next={fetchMore}
               hasMore={hasMore}
-              scrollableTarget={'ModalSearchWrapper'}
+              scrollableTarget={'ResultWrapper'}
+              loader={<Loader/>}
             >
               {
                 openings.map((opening) => {
                   return (
-                    <ModalSearchResult key={opening.id} >
+                    <ResultRow key={opening.id} >
                       <Link to={`/opening/${opening.slug}`} onClick={closeModal}>
-                        <ModalSearchResultName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)}</ModalSearchResultName>
-                        <ModalSearchResultSequence>{opening.sequence}</ModalSearchResultSequence>
+                        <ResultRowName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)}</ResultRowName>
+                        <ResultRowSequence>{opening.sequence}</ResultRowSequence>
                       </Link>
-                    </ModalSearchResult>
+                    </ResultRow>
                   )
                 })
               }
             </InfiniteScroll>
-          </ModalSearchResults>
-        </ModalSearchWrapper>
+          </ResultHolder>
+        </ResultWrapper>
       </Modal>
     </Wrapper>
   );
@@ -202,14 +207,14 @@ const SearchInput = styled.input`
   font-weight: bold;
 `;
 
-const ModalSearchInputWrapper = styled.div`
+const InputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: ${props => props.theme.colors.black};
   border-radius: 12px 12px 0 0;
 `;
 
-const ModalSearchInput = styled.input`
+const Input = styled.input`
   width: 75%;
   padding-left: 16px;
   letter-spacing: 1.5px;
@@ -224,24 +229,26 @@ const ModalSearchInput = styled.input`
   font-weight: bold;
 `;
 
-const ModalSearchWrapper = styled.div`
+const ResultWrapper = styled.div`
   height: 100%;
   overflow: scroll;
   width: 100%;
 `;
 
-const ModalSearchCount = styled.div`
-  color: ${props => props.theme.colors.green};
+const SearchCount = styled.div`
+  margin-top: 6px;
+  color: ${props => props.theme.colors.white};
   margin: 0px 16px;
   display: flex;
   align-items: center;
+  letter-spacing: 1.5px;
 `;
 
-const ModalSearchResults = styled.div`
+const ResultHolder = styled.div`
   height: 100%;
 `;
 
-const ModalSearchResult = styled.div`
+const ResultRow = styled.div`
     margin: 0 16px;
     border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
     padding: 16px 0;
@@ -252,7 +259,7 @@ const Link = styled(NavLink)`
   color: ${props => props.theme.colors.green};
 `;
 
-const ModalSearchResultName = styled.p`
+const ResultRowName = styled.p`
   font-size: 18px;
   color: ${props => props.theme.colors.white};
   margin-bottom: 8px;
@@ -266,7 +273,7 @@ const MatchingResultNameMatch = styled.span`
   color: ${props => props.theme.colors.green};
 `;
 
-const ModalSearchResultSequence = styled.p`
+const ResultRowSequence = styled.p`
   font-size: 14px;
   font-style: italic;
   color: ${props => props.theme.colors.lightgrey};

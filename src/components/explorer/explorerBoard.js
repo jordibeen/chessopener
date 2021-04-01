@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Chessground from 'react-chessground';
 
-import { getSequenceForHistory } from '../../helpers/chess';
+import { getSequenceForHistory } from 'helpers/chess';
 import Button from "../common/button";
 
 const Chess = require("chess.js");

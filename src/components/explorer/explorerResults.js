@@ -68,7 +68,8 @@ function ExplorerResults({ sequence }) {
           }</Sequence>
           {
             count ?
-            <SequenceCount>{count} results</SequenceCount> : null
+            <SequenceCount>{count} results</SequenceCount>
+            : null
           }
         </Header>
         <MatchingOpeningsWrapper id='MatchingOpeningsWrapper'>

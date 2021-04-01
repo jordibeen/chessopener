@@ -21,6 +21,10 @@ function LichessStats(opening) {
         setError(error);
         setIsLoaded(true);
       })
+
+      return () => {
+        setIsLoaded(false);
+      }
   }, [opening])
 
   function generateTooltip(hovered) {
@@ -48,6 +52,10 @@ function LichessStats(opening) {
     return null;
   }
 
+  const whiteWinPercentage = Math.round(stats.whiteWins / stats.amountPlayed * 100);
+  const drawPercentage = Math.round(stats.draws / stats.amountPlayed * 100)
+  const blackWinPercentage = Math.round(stats.blackWins / stats.amountPlayed * 100)
+
   return (
       <Wrapper>
         <GeneralStats>
@@ -57,14 +65,14 @@ function LichessStats(opening) {
         <WinDistribution data-tip="" data-for="winDistribution">
           <WinDistributionLabel>Win Distribution</WinDistributionLabel>
           <SimpleBarChart>
-            <WhiteBar value={Math.round(stats.whiteWins / stats.amountPlayed * 100)} onMouseOver={() => setHovered('white')} onMouseLeave={() => setHovered(null)} >
-              {Math.round(stats.whiteWins / stats.amountPlayed * 100)}%
+            <WhiteBar value={whiteWinPercentage} onMouseOver={() => setHovered('white')} onMouseLeave={() => setHovered(null)} >
+              {whiteWinPercentage}%
             </WhiteBar>
-            <DrawBar value={Math.round(stats.draws / stats.amountPlayed * 100)} onMouseOver={() => setHovered('draw')} onMouseLeave={() => setHovered(null)} >
-              {Math.round(stats.draws / stats.amountPlayed * 100)}%
+            <DrawBar value={drawPercentage} onMouseOver={() => setHovered('draw')} onMouseLeave={() => setHovered(null)} >
+              {drawPercentage}%
             </DrawBar>
-            <BlackBar value={Math.round(stats.blackWins / stats.amountPlayed * 100)} onMouseOver={() => setHovered('black')} onMouseLeave={() => setHovered(null)} >
-              {Math.round(stats.blackWins / stats.amountPlayed * 100)}%
+            <BlackBar value={blackWinPercentage} onMouseOver={() => setHovered('black')} onMouseLeave={() => setHovered(null)} >
+              {blackWinPercentage}%
             </BlackBar>
           </SimpleBarChart>
           <ReactTooltip
@@ -88,7 +96,7 @@ const GeneralStats = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 18px;
   color: ${props => props.theme.colors.white};
   padding: 16px;
 `;
@@ -113,6 +121,7 @@ const WinDistribution = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 8px 32px;
+  font-size: 14px;
 `;
 
 const WinDistributionLabel = styled.div`
@@ -126,9 +135,6 @@ const SimpleBarChart = styled.div`
   height: 32px;
   border-radius: 2px;
   font-size: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const BarEntry = styled.div`

@@ -18,8 +18,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Menu />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/explorer" component={Explorer} />
+        <Route exact path="/" component={Explorer} />
         <Route exact path="/about" component={About} />
         <Route path="/game/:id" component={Game} />
         <Route path="/opening/:slug" component={Opening} />

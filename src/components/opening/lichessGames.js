@@ -26,6 +26,10 @@ function OpeningInformation(opening) {
         setError(error);
         setIsLoaded(true);
       })
+
+      return () => {
+        setIsLoaded(false);
+      }
   }, [opening])
 
   function getResult(winner) {
@@ -139,6 +143,7 @@ const LichessPlayers = styled(TableItem)`
   display: flex;
   justify-content: space-between;
   flex: 0.6;
+  font-size: 14px;
 `;
 
 const LichessWhitePlayer = styled.div`
