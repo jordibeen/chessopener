@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import ReactTooltip from 'react-tooltip';
 import { NavLink } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import Loader from "../common/loader";
 
+import { generateFenTooltip } from "helpers/fenTooltip";
 
 function ExplorerResults({ sequence }) {
   const [count, setCount] = useState(0);
@@ -81,13 +83,17 @@ function ExplorerResults({ sequence }) {
             loader={<Loader/>}
           >
             {
-                openings.map((opening) => {
+                openings.map((opening, i) => {
                   return (
-                    <MatchingOpeningResult key={opening.id} >
+                    <MatchingOpeningResult key={opening.id} data-tip={i} data-for={`explorer-tooltip-${i}`} >
                       <Link to={`/opening/${opening.slug}`}>
                         <MatchingOpeningResultName>[{opening.eco}] {opening.name}</MatchingOpeningResultName>
                         { returnMatchingOpeningResultSequence(sequence, opening.sequence) }
                       </Link>
+                      <ReactTooltip
+                         id={`explorer-tooltip-${i}`}
+                         getContent={() => generateFenTooltip(opening.fen)}
+                       />
                     </MatchingOpeningResult>
                   )
                 })

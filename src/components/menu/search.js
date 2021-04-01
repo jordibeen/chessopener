@@ -1,11 +1,13 @@
 import React, { useState, useEffect, createRef } from 'react';
 import styled from 'styled-components';
+import ReactTooltip from 'react-tooltip';
 import Modal from 'react-modal';
 import { NavLink } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import Loader from "../common/loader";
 
+import { generateFenTooltip } from "helpers/fenTooltip";
 import useDebounce from 'helpers/useDebounce';
 
 const modalStyles = {
@@ -170,13 +172,17 @@ function Search() {
               loader={<Loader/>}
             >
               {
-                openings.map((opening) => {
+                openings.map((opening, i) => {
                   return (
-                    <ResultRow key={opening.id} >
+                    <ResultRow key={opening.id} data-tip={i} data-for={`search-tooltip-${i}`} >
                       <Link to={`/opening/${opening.slug}`} onClick={closeModal}>
                         <ResultRowName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)}</ResultRowName>
                         <ResultRowSequence>{opening.sequence}</ResultRowSequence>
                       </Link>
+                      <ReactTooltip
+                         id={`search-tooltip-${i}`}
+                         getContent={() => generateFenTooltip(opening.fen)}
+                       />
                     </ResultRow>
                   )
                 })

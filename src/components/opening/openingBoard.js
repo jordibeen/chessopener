@@ -34,11 +34,11 @@ function OpeningBoard(opening) {
   }
 
   function generateFen(sequence){
-    const nextChess = new Chess();
+    const _c = new Chess();
     sequence.forEach((move, i) => {
-      nextChess.move(move);
+      _c.move(move);
     });
-    return nextChess.fen()
+    return _c.fen()
   }
 
   function previousPosition() {
