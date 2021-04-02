@@ -44,14 +44,12 @@ const Intro = styled.p`
   text-align: center;
   font-size: 16px;
   margin-bottom: 32px;
-  color: ${props => props.theme.colors.white};
 `;
 
 const ApplicationInfo = styled.div`
   text-align: center;
   font-size: 16px;
   margin-bottom: 32px;
-  color: ${props => props.theme.colors.white};
 `;
 
 const Highlight = styled.span`

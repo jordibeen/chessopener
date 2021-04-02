@@ -50,6 +50,10 @@ function OpeningInformation(opening) {
     return <Error />
   }
 
+  if(!games || !games.length) {
+    return <NoGames>No recent games</NoGames>
+  }
+
   return (
       <Wrapper>
         {
@@ -213,6 +217,13 @@ const LichessIconWrapper = styled.div`
   background-position: center center;
   width: 24px;
   height: 24px;
+`;
+
+const NoGames = styled.div`
+  margin-top: 16px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
 `;
 
 export default OpeningInformation;
