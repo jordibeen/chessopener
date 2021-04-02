@@ -174,7 +174,7 @@ function Search() {
               {
                 openings.map((opening, i) => {
                   return (
-                    <ResultRow key={opening.id} data-tip={i} data-for={`search-tooltip-${i}`} >
+                    <ResultRow key={opening.id} data-tip={`search-tooltip-${i}`} data-for={`search-tooltip-${i}`} >
                       <Link to={`/opening/${opening.slug}`} onClick={closeModal}>
                         <ResultRowName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)}</ResultRowName>
                         <ResultRowSequence>{opening.sequence}</ResultRowSequence>

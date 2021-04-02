@@ -10,7 +10,7 @@ const Chess = require("chess.js");
 
 function ExplorerBoard({ sequence, setSequence }) {
   const [chess] = useState(new Chess());
-  const [lastMove, setLastMove] = useState();
+  const [lastMove, setLastMove] = useState(null);
   const [orientation, setOrientation] = useState(false);
   const [fen, setFen] = useState('start');
 
@@ -42,8 +42,8 @@ function ExplorerBoard({ sequence, setSequence }) {
 
 
   function onResetClick(){
-    const resetChess = new Chess();
-    setSequence(getSequenceForHistory(resetChess.history()));
+    setSequence('');
+    setLastMove(null);
   }
 
   function onUndoClick(){

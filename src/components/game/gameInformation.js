@@ -51,7 +51,7 @@ function GameInformation(game) {
             <p>{moment(game.game.playedAt).format('MMM Do YYYY')}</p>
           </LichessDate>
           <LichessLinkWrapper>
-            <LichessLink target='_blank' rel="noopener noreferrer" href={`https://lichess.org/${game.game.lichessId}`} >
+            <LichessLink target='_blank' rel='noopener noreferrer' href={`https://lichess.org/${game.game.lichessId}`} >
               <LichessIconWrapper imageUrl={LichessIcon} />
             </LichessLink>
           </LichessLinkWrapper>

@@ -7,8 +7,8 @@ import { ReactComponent as BlitzIcon } from 'assets/icons/blitz.svg';
 import { ReactComponent as RapidIcon } from 'assets/icons/rapid.svg';
 import { ReactComponent as ClassicalIcon } from 'assets/icons/classical.svg';
 import LichessIcon from 'assets/icons/lichess.png';
-import Loader from "../common/loader";
-import Error from "../common/error";
+import Loader from '../common/loader';
+import Error from '../common/error';
 
 function OpeningInformation(opening) {
   const [error, setError] = useState(null);
@@ -76,7 +76,7 @@ function OpeningInformation(opening) {
                     <Year>{moment(game.playedAt).format('YYYY')}</Year>
                   </LichessDate>
                   <LichessLinkWrapper>
-                    <LichessLink target='_blank' rel="noopener noreferrer" href={`https://lichess.org/${game.lichessId}`} >
+                    <LichessLink target='_blank' rel='noopener noreferrer' href={`https://lichess.org/${game.lichessId}`} >
                       <LichessIconWrapper imageUrl={LichessIcon} />
                     </LichessLink>
                   </LichessLinkWrapper>
