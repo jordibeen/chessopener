@@ -9,8 +9,6 @@ import { ReactComponent as ClassicalIcon } from 'assets/icons/classical.svg';
 import LichessIcon from 'assets/icons/lichess.png';
 
 function GameInformation(game) {
-  console.log(game);
-
   function getResult(winner) {
     if(winner === 'draw'){
       return '½ - ½';
@@ -61,6 +59,23 @@ function GameInformation(game) {
           </LichessLink>
         </LichessLinkWrapper>
       </Information>
+      <Moves>
+        <MoveRow>
+          <MoveNumber>1</MoveNumber>
+          <WhiteMove>e4</WhiteMove>
+          <BlackMove>e5</BlackMove>
+        </MoveRow>
+        <MoveRow>
+          <MoveNumber>2</MoveNumber>
+          <WhiteMove>Nc3</WhiteMove>
+          <BlackMove>f6</BlackMove>
+        </MoveRow>
+        <MoveRow>
+          <MoveNumber>3</MoveNumber>
+          <WhiteMove>Ke2</WhiteMove>
+          <BlackMove>Ke7</BlackMove>
+        </MoveRow>
+      </Moves>
     </Wrapper>
   );
 }
@@ -246,5 +261,26 @@ const LichessIconWrapper = styled.div`
   width: 24px;
   height: 24px;
 `;
+
+const Moves = styled.div`
+`;
+
+const MoveRow = styled.div`
+  display: flex;
+`;
+
+const MoveNumber = styled.div`
+  flex: 0.1;
+`;
+
+const WhiteMove = styled.div`
+  flex: 0.45;
+`;
+
+const BlackMove = styled.div`
+  flex: 0.45;
+`;
+
+
 
 export default GameInformation;
