@@ -6,24 +6,22 @@ import Button from "../common/button";
 
 const Chess = require("chess.js");
 
-function GameBoard(game) {
+function GameBoard({game, chessHistory, setChessHistory, currentPosition, setCurrentPosition, boardPosition}) {
   const [chess] = useState(new Chess());
   const [initialPgnLoaded, setInitialPgnLoaded] = useState(false);
   const [fen, setFen] = useState(null);
-  const [history, setHistory] = useState(null);
   const [orientation, setOrientation] = useState(false);
-  const [historyPosition, setHistoryPosition] = useState(null);
 
   useEffect(() => {
-    chess.load_pgn(game.game.pgn);
-    const chessHistory = chess.history();
-    setHistory(chessHistory);
-    setHistoryPosition(chessHistory.length);
+    chess.load_pgn(game.pgn);
+    const _ch = chess.history();
+    setChessHistory(_ch);
+    setCurrentPosition(_ch.length);
     setInitialPgnLoaded(true);
-  }, [chess, game.game.pgn]);
+  }, [chess, game.pgn]);
 
   useEffect(() => {
-    const openingSequence = game.game.opening.sequence;
+    const openingSequence = game.opening.sequence;
     const openingSequencePosition = openingSequence.split(' ').length;
     if(initialPgnLoaded){
       goToPosition(openingSequencePosition);
@@ -31,41 +29,47 @@ function GameBoard(game) {
   }, [initialPgnLoaded]);
 
   useEffect(() => {
+    if(boardPosition){
+      goToPosition(boardPosition);
+    }
+  }, [boardPosition])
+
+  useEffect(() => {
     document.addEventListener('keydown', keydownFunc, false);
     return () => document.removeEventListener('keydown', keydownFunc, false);
   });
 
   function goToPosition(position) {
-    const sequence = history.slice(0, position);
+    const sequence = chessHistory.slice(0, position);
     const positionFen = generateFen(sequence);
-    setHistoryPosition(position);
+    setCurrentPosition(position);
     setFen(positionFen);
   }
 
   function generateFen(sequence){
-    const nextChess = new Chess();
+    const _c = new Chess();
     sequence.forEach((move, i) => {
-      nextChess.move(move);
+      _c.move(move);
     });
-    return nextChess.fen()
+    return _c.fen()
   }
 
   function previousPosition() {
-    if (historyPosition === 0) {
+    if (currentPosition === 0) {
       return;
     }
-    goToPosition(historyPosition - 1);
+    goToPosition(currentPosition - 1);
   }
 
   function nextPosition() {
-    if(historyPosition === history.length) {
+    if(currentPosition === chessHistory.length) {
       return;
     }
-    goToPosition(historyPosition + 1);
+    goToPosition(currentPosition + 1);
   }
 
   function endPosition() {
-    goToPosition(history.length);
+    goToPosition(chessHistory.length);
   }
 
   function startingPosition() {
@@ -108,22 +112,9 @@ function GameBoard(game) {
           }
         />
       </BoardHolder>
-      <SequenceHolder>
-        {
-          history.map((hist, i) => {
-            let seq = null;
-            if(!(i % 2)){
-              seq = `${i / 2 + 1}.${hist}`;
-            } else {
-              seq = hist;
-            }
-            return(<Sequence key={i} onClick={() => {goToPosition(i + 1)}} active={(i + 1) === historyPosition}>{seq}</Sequence>)
-          })
-        }
-      </SequenceHolder>
       <ButtonHolder>
-        <UndoButton onClick={previousPosition}>Previous</UndoButton>
-        <UndoButton onClick={nextPosition}>Next</UndoButton>
+        <PreviousButton onClick={previousPosition}>Previous</PreviousButton>
+        <NextButton onClick={nextPosition}>Next</NextButton>
         <OrientationButton onClick={onOrientationClick}>Orientation</OrientationButton>
       </ButtonHolder>
     </Wrapper>
@@ -155,33 +146,17 @@ const BoardHolder = styled.div`
   }
 `;
 
-const SequenceHolder = styled.div`
-  margin-top: 32px;
-  background-color: ${props => props.theme.colors.black};
-  border: 1px solid ${props => props.theme.colors.lightgrey};
-  border-radius: 4px;
-  color: ${props => props.theme.colors.white};
-  padding: 8px;
-  overflow: scroll;
-  font-weight: bold;
-  word-break: break-all;
-`;
-
-const Sequence = styled.span`
-  margin-left: 12px;
-  cursor: pointer;
-  ${p => p.active ?
-      `border-bottom: 2px solid ${p.theme.colors.green}` : null
-  }
-`;
-
 const ButtonHolder = styled.div`
   margin-top: 32px;
   display: flex;
   justify-content: center;
 `;
 
-const UndoButton = styled(Button)`
+const PreviousButton = styled(Button)`
+  margin-right: 16px;
+`;
+
+const NextButton = styled(Button)`
   margin-right: 16px;
 `;
 

@@ -15,7 +15,7 @@ function Welcome() {
         start off by playing an opening on the <Highlight>explorer board</Highlight>, or <Highlight>press escape</Highlight> to search through openings by name
       </ApplicationInfo>
       <Outro>
-        enjoying this product? consider <ExternalLink href='https://www.buymeacoffee.com/jordaye' target='_blank' rel='noopener noreferrer'>buying me a coffee</ExternalLink>
+        enjoy this product? consider <ExternalLink href='https://www.buymeacoffee.com/jordaye' target='_blank' rel='noopener noreferrer'>buying me a coffee</ExternalLink>
       </Outro>
     </Wrapper>
   );

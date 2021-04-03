@@ -8,7 +8,7 @@ import { ReactComponent as RapidIcon } from 'assets/icons/rapid.svg';
 import { ReactComponent as ClassicalIcon } from 'assets/icons/classical.svg';
 import LichessIcon from 'assets/icons/lichess.png';
 
-function GameInformation(game) {
+function GameInformation({game, chessHistory, currentPosition, setBoardPosition}) {
   function getResult(winner) {
     if(winner === 'draw'){
       return '½ - ½';
@@ -19,31 +19,39 @@ function GameInformation(game) {
     }
   }
 
+  function onMoveClick(position) {
+    setBoardPosition(position);
+  }
+
+  if(!chessHistory) {
+    return null;
+  }
+
   return (
     <Wrapper>
       <Header>
         <EcoWrapper>
-          <Eco>{game.game.opening.eco}</Eco>
+          <Eco>{game.opening.eco}</Eco>
         </EcoWrapper>
         <NameSequenceWrapper>
-          <Name>{game.game.opening.name}</Name>
-          <Sequence>{game.game.opening.sequence}</Sequence>
+          <Name>{game.opening.name}</Name>
+          <Sequence>{game.opening.sequence}</Sequence>
         </NameSequenceWrapper>
       </Header>
       <Information>
         <WhitePlayer>
           <WhiteAvatar />
-          <WhiteName winner={game.game.winner === 'white'}>{game.game.whiteName} ({game.game.whiteRating})</WhiteName>
+          <WhiteName winner={game.winner === 'white'}>{game.whiteName} ({game.whiteRating})</WhiteName>
         </WhitePlayer>
         <Game>
           <TypeWrapper>
             {
-              game.game.speed === 'blitz' ? <Blitz/> :
-              game.game.speed === 'rapid' ? <Rapid/> :
-              game.game.speed === 'classical' ? <Classical/> : null
+              game.speed === 'blitz' ? <Blitz/> :
+              game.speed === 'rapid' ? <Rapid/> :
+              game.speed === 'classical' ? <Classical/> : null
             }
           </TypeWrapper>
-          <Result winner={game.game.winner}>{getResult(game.game.winner)}</Result>
+          <Result winner={game.winner}>{getResult(game.winner)}</Result>
           <DateWrapper>
             <Date>{moment(game.playedAt).format('MMM Do')}</Date>
             <Year>{moment(game.playedAt).format('YYYY')}</Year>
@@ -51,30 +59,30 @@ function GameInformation(game) {
         </Game>
         <BlackPlayer>
           <BlackAvatar />
-          <BlackName winner={game.game.winner === 'black'}>{game.game.blackName} ({game.game.blackRating})</BlackName>
+          <BlackName winner={game.winner === 'black'}>{game.blackName} ({game.blackRating})</BlackName>
         </BlackPlayer>
         <LichessLinkWrapper>
-          <LichessLink target='_blank' rel='noopener noreferrer' href={`https://lichess.org/${game.game.lichessId}`} >
+          <LichessLink target='_blank' rel='noopener noreferrer' href={`https://lichess.org/${game.lichessId}`} >
             <LichessIconWrapper imageUrl={LichessIcon} />
           </LichessLink>
         </LichessLinkWrapper>
       </Information>
       <Moves>
-        <MoveRow>
-          <MoveNumber>1</MoveNumber>
-          <WhiteMove>e4</WhiteMove>
-          <BlackMove>e5</BlackMove>
-        </MoveRow>
-        <MoveRow>
-          <MoveNumber>2</MoveNumber>
-          <WhiteMove>Nc3</WhiteMove>
-          <BlackMove>f6</BlackMove>
-        </MoveRow>
-        <MoveRow>
-          <MoveNumber>3</MoveNumber>
-          <WhiteMove>Ke2</WhiteMove>
-          <BlackMove>Ke7</BlackMove>
-        </MoveRow>
+        {
+          chessHistory.map((hist, i) => {
+            if(!(i % 2)){
+              return (
+                <MoveRow key={i}>
+                  <MoveNumber>{i / 2 + 1}</MoveNumber>
+                  <WhiteMove onClick={() => onMoveClick(i + 1)} active={i === (currentPosition - 1)}>{chessHistory[i]}</WhiteMove>
+                  <BlackMove onClick={() => onMoveClick(i + 2)} active={(i + 1) === (currentPosition - 1)}>{chessHistory[i + 1]}</BlackMove>
+                </MoveRow>
+              )
+            } else {
+              return null;
+            }
+          })
+        }
       </Moves>
     </Wrapper>
   );
@@ -263,22 +271,44 @@ const LichessIconWrapper = styled.div`
 `;
 
 const Moves = styled.div`
+  overflow: scroll;
 `;
 
 const MoveRow = styled.div`
   display: flex;
+  font-size: 20px;
+  letter-spacing: 1.5px;
 `;
 
 const MoveNumber = styled.div`
   flex: 0.1;
+  border-right: 1px solid ${props => props.theme.colors.lightgrey};
+  text-align: right;
+  padding-right: 8px;
 `;
 
-const WhiteMove = styled.div`
+const Move = styled.div`
+  cursor: pointer;
   flex: 0.45;
+  padding-left: 8px;
+  border-right: 1px solid ${props => props.theme.colors.lightgrey};
+  ${p => p.active ?
+      `
+        font-weight: bold;
+        background-color: ${p.theme.colors.componentBackgroundHighlight};
+      `
+      : null
+  }
+
+  :hover {
+    background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+  }
 `;
 
-const BlackMove = styled.div`
-  flex: 0.45;
+const WhiteMove = styled(Move)`
+`;
+
+const BlackMove = styled(Move)`
 `;
 
 

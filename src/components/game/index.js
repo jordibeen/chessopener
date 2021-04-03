@@ -6,6 +6,9 @@ import GameInformation from './gameInformation';
 
 function Game({history, location, match}) {
   const [game, setGame] = useState(null);
+  const [chessHistory, setChessHistory] = useState(null);
+  const [currentPosition, setCurrentPosition] = useState(null);
+  const [boardPosition, setBoardPosition] = useState(null);
   const id = match.params.id;
 
   useEffect(() => {
@@ -21,8 +24,20 @@ function Game({history, location, match}) {
 
   return (
     <Wrapper>
-      <GameBoard game={game} />
-      <GameInformation game={game} />
+      <GameBoard
+        game={game}
+        chessHistory={chessHistory}
+        setChessHistory={setChessHistory}
+        currentPosition={currentPosition}
+        setCurrentPosition={setCurrentPosition}
+        boardPosition={boardPosition}
+      />
+      <GameInformation
+        game={game}
+        chessHistory={chessHistory}
+        currentPosition={currentPosition}
+        setBoardPosition={setBoardPosition}
+      />
     </Wrapper>
   );
 }
