@@ -6,7 +6,6 @@ import theme from 'theme';
 import 'assets/chessboard/style.css';
 import 'assets/loader/react-spinner-loader.css';
 
-import Home from 'components/home';
 import Explorer from 'components/explorer';
 import Menu from 'components/menu';
 import About from 'components/about';

@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom';
 import { ReactComponent as BlitzIcon } from 'assets/icons/blitz.svg';
 import { ReactComponent as RapidIcon } from 'assets/icons/rapid.svg';
 import { ReactComponent as ClassicalIcon } from 'assets/icons/classical.svg';
-import LichessIcon from 'assets/icons/lichess.png';
 import Loader from '../common/loader';
 import Error from '../common/error';
 
@@ -79,11 +78,6 @@ function OpeningInformation(opening) {
                     <Date>{moment(game.playedAt).format('MMM Do')}</Date>
                     <Year>{moment(game.playedAt).format('YYYY')}</Year>
                   </LichessDate>
-                  <LichessLinkWrapper>
-                    <LichessLink target='_blank' rel='noopener noreferrer' href={`https://lichess.org/${game.lichessId}`} >
-                      <LichessIconWrapper imageUrl={LichessIcon} />
-                    </LichessLink>
-                  </LichessLinkWrapper>
                 </LichessGame>
               </GameLink>
             )
@@ -146,7 +140,7 @@ const LichessType = styled(TableItem)`
 const LichessPlayers = styled(TableItem)`
   display: flex;
   justify-content: space-between;
-  flex: 0.6;
+  flex: 0.7;
   font-size: 14px;
 `;
 
@@ -198,25 +192,6 @@ const Date = styled.div`
 const Year = styled.div`
   font-size: 20px;
   font-weight: bold;
-`;
-
-const LichessLinkWrapper = styled(TableItem)`
-  flex: 0.1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const LichessLink = styled.a`
-  text-decoration: none;
-`;
-
-const LichessIconWrapper = styled.div`
-  background-image: url(${p => p.imageUrl});
-  background-size: cover;
-  background-position: center center;
-  width: 24px;
-  height: 24px;
 `;
 
 const NoGames = styled.div`

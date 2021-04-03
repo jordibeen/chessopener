@@ -37,7 +37,7 @@ function MatchingOpenings({ sequence, count, setCount }) {
     return () => {
       setIsLoaded(false);
     }
-  }, [sequence]);
+  }, [sequence, setCount]);
 
   useEffect(() => {
     const page = Math.ceil(openings.length / limit);

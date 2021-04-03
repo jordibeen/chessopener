@@ -18,7 +18,7 @@ function GameBoard({game, chessHistory, setChessHistory, currentPosition, setCur
     setChessHistory(_ch);
     setCurrentPosition(_ch.length);
     setInitialPgnLoaded(true);
-  }, [chess, game.pgn]);
+  }, [chess, game.pgn, setChessHistory, setCurrentPosition]);
 
   useEffect(() => {
     const openingSequence = game.opening.sequence;
@@ -26,7 +26,7 @@ function GameBoard({game, chessHistory, setChessHistory, currentPosition, setCur
     if(initialPgnLoaded){
       goToPosition(openingSequencePosition);
     }
-  }, [initialPgnLoaded]);
+  }, [initialPgnLoaded, game.opening.sequence]);
 
   useEffect(() => {
     if(boardPosition){

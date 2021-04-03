@@ -40,8 +40,10 @@ function GameInformation({game, chessHistory, currentPosition, setBoardPosition}
       </Header>
       <Information>
         <WhitePlayer>
-          <WhiteAvatar />
-          <WhiteName winner={game.winner === 'white'}>{game.whiteName} ({game.whiteRating})</WhiteName>
+          <PlayerLink href={`https://lichess.org/@/${game.whiteName}`} target='_blank' rel='noopener noreferrer' alt='View profile on lichess.com'>
+            <WhiteAvatar />
+            <WhiteName winner={game.winner === 'white'}>{game.whiteName} ({game.whiteRating})</WhiteName>
+          </PlayerLink>
         </WhitePlayer>
         <Game>
           <TypeWrapper>
@@ -58,11 +60,13 @@ function GameInformation({game, chessHistory, currentPosition, setBoardPosition}
           </DateWrapper>
         </Game>
         <BlackPlayer>
-          <BlackAvatar />
-          <BlackName winner={game.winner === 'black'}>{game.blackName} ({game.blackRating})</BlackName>
+          <PlayerLink href={`https://lichess.org/@/${game.blackName}`} target='_blank' rel='noopener noreferrer' alt='View profile on lichess.com'>
+            <BlackAvatar />
+            <BlackName winner={game.winner === 'black'}>{game.blackName} ({game.blackRating})</BlackName>
+          </PlayerLink>
         </BlackPlayer>
         <LichessLinkWrapper>
-          <LichessLink target='_blank' rel='noopener noreferrer' href={`https://lichess.org/${game.lichessId}`} >
+          <LichessLink href={`https://lichess.org/${game.lichessId}`} target='_blank' rel='noopener noreferrer' alt='View game on lichess.com'>
             <LichessIconWrapper imageUrl={LichessIcon} />
           </LichessLink>
         </LichessLinkWrapper>
@@ -147,6 +151,12 @@ const Information = styled.div`
   position: relative;
 `;
 
+const PlayerLink = styled.a`
+  text-decoration: none;
+  text-align: center;
+  color: ${props => props.theme.colors.white};
+`;
+
 const WhitePlayer = styled.div`
   flex: 0.4;
   display: flex;
@@ -163,6 +173,7 @@ const WhiteAvatar = styled(ProfileIcon)`
 `;
 
 const WhiteName = styled.div`
+  text-align: center;
   font-weight: ${props => props.winner ? 'bold' : 'none'};
 `;
 
@@ -246,6 +257,7 @@ const BlackAvatar = styled(ProfileIcon)`
 `;
 
 const BlackName = styled.div`
+  text-align: center;
   font-weight: ${props => props.winner ? 'bold' : 'none'};
 `;
 
@@ -278,6 +290,7 @@ const MoveRow = styled.div`
   display: flex;
   font-size: 20px;
   letter-spacing: 1.5px;
+  line-height: 1.5;
 `;
 
 const MoveNumber = styled.div`
@@ -289,9 +302,8 @@ const MoveNumber = styled.div`
 
 const Move = styled.div`
   cursor: pointer;
-  flex: 0.45;
+  flex: 0.48;
   padding-left: 8px;
-  border-right: 1px solid ${props => props.theme.colors.lightgrey};
   ${p => p.active ?
       `
         font-weight: bold;
@@ -306,6 +318,7 @@ const Move = styled.div`
 `;
 
 const WhiteMove = styled(Move)`
+  border-right: 1px solid ${props => props.theme.colors.lightgrey};
 `;
 
 const BlackMove = styled(Move)`
