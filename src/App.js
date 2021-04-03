@@ -8,7 +8,6 @@ import 'assets/loader/react-spinner-loader.css';
 
 import Explorer from 'components/explorer';
 import Menu from 'components/menu';
-import About from 'components/about';
 import Opening from 'components/opening';
 import Game from 'components/game';
 
@@ -18,7 +17,6 @@ function App() {
       <BrowserRouter>
         <Menu />
         <Route exact path="/" component={Explorer} />
-        <Route exact path="/about" component={About} />
         <Route path="/game/:id" component={Game} />
         <Route path="/opening/:slug" component={Opening} />
       </BrowserRouter>
