@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import Chessground from 'react-chessground';
 
 function generateFenTooltip(fen) {
-  console.log('generating tooltip')
   return (
     <Wrapper>
       <BoardHolder>

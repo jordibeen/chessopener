@@ -88,20 +88,25 @@ function MatchingOpenings({ sequence, count, setCount }) {
         {
             openings.map((opening, i) => {
               return (
-                <OpeningRow key={opening.id} data-tip={`explorer-tooltip-${i}`} data-for={`explorer-tooltip-${i}`} >
+                <OpeningRow
+                  key={opening.id}
+                  data-tip={opening.fen}
+                  data-for={`explorer-tooltip`}
+                >
                   <Link to={`/opening/${opening.slug}`}>
                     <OpeningName>[{opening.eco}] {opening.name}</OpeningName>
                     { returnResultSequence(sequence, opening.sequence) }
                   </Link>
-                  <ReactTooltip
-                     id={`explorer-tooltip-${i}`}
-                     getContent={() => generateFenTooltip(opening.fen)}
-                   />
                 </OpeningRow>
               )
             })
         }
       </InfiniteScroll>
+      <ReactTooltip
+         id={`explorer-tooltip`}
+         place={'bottom'}
+         getContent={generateFenTooltip}
+       />
     </Wrapper>
   );
 }
