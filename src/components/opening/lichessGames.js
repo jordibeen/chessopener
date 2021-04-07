@@ -142,20 +142,34 @@ const LichessPlayers = styled(TableItem)`
   justify-content: space-between;
   flex: 0.7;
   font-size: 14px;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    flex: 0.6;
+  }
 `;
 
 const LichessWhitePlayer = styled.div`
   font-weight: ${props => props.winner ? 'bold' : 'none'};
   flex: 0.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const LichessBlackPlayer = styled.div`
   font-weight: ${props => props.winner ? 'bold' : 'none'};
   flex: 0.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const LichessResultWrapper = styled(TableItem)`
   flex: 0.1;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    flex: 0.15;
+  }
 `;
 
 const LichessResult = styled.div`
@@ -177,25 +191,30 @@ const LichessResult = styled.div`
       props.winner === 'black' ? props.theme.colors.white :
       props.winner === 'draw' ? props.theme.colors.white : props.theme.colors.white
   };
+  margin: 0 auto;
 `;
 
 const LichessDate = styled(TableItem)`
   flex: 0.1;
   flex-direction: column;
   text-align: center;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    flex: 0.15;
+  }
 `;
 
 const Date = styled.div`
-  font-size: 14px;
+  font-size: 12px;
 `;
 
 const Year = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 `;
 
 const NoGames = styled.div`
-  margin-top: 16px;
+  margin: 16px 0;
   font-size: 16px;
   display: flex;
   justify-content: center;

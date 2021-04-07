@@ -76,6 +76,10 @@ function MatchingOpenings({ sequence, count, setCount }) {
     return <Error />
   }
 
+  if(!openings || !openings.length) {
+    return <NoOpenings>no openings found</NoOpenings>
+  }
+
   return (
     <Wrapper id='MatchingOpenings'>
       <InfiniteScroll
@@ -114,6 +118,10 @@ function MatchingOpenings({ sequence, count, setCount }) {
 const Wrapper = styled.div`
   height: 100%;
   overflow: scroll;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    height: 320px;
+  }
 `;
 
 const OpeningRow = styled.div`
@@ -144,6 +152,13 @@ const ResultSequence = styled.p`
 
 const Match = styled.span`
   color: ${props => props.theme.colors.green};
+`;
+
+const NoOpenings = styled.div`
+  margin: 16px 0;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
 `;
 
 export default MatchingOpenings;

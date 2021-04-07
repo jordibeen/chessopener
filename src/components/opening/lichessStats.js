@@ -59,7 +59,7 @@ function LichessStats(opening) {
   return (
       <Wrapper>
         <GeneralStats>
-          <PlayedLabel>Played <Played>{stats.amountPlayed}</Played> times</PlayedLabel>
+          <PlayedLabel>Played: <Played>{stats.amountPlayed}</Played></PlayedLabel>
           <RatingLabel>Avg. rating: <Rating>{stats.averageRating}</Rating></RatingLabel>
         </GeneralStats>
         <WinDistribution data-tip="" data-for="winDistribution">
@@ -96,7 +96,7 @@ const GeneralStats = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 16px;
   color: ${props => props.theme.colors.white};
   padding: 16px;
 `;
@@ -121,7 +121,7 @@ const WinDistribution = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 8px 32px;
-  font-size: 14px;
+  font-size: 12px;
 `;
 
 const WinDistributionLabel = styled.div`

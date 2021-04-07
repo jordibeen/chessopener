@@ -136,7 +136,7 @@ function Search() {
       <SearchInput
         ref={menuInput}
         type="text"
-        placeholder="press esc to search"
+        placeholder="click to search"
         value={search}
         onChange={onChange}
         onFocus={openModal}
@@ -203,6 +203,7 @@ function Search() {
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
+  height: 52px;
 `;
 
 const SearchInput = styled.input`
@@ -216,6 +217,7 @@ const SearchInput = styled.input`
   outline: none;
   color: ${props => props.theme.colors.green};
   font-weight: bold;
+  margin-left: 16px;
 `;
 
 const InputWrapper = styled.div`

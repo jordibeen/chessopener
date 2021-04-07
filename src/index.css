@@ -57,7 +57,7 @@ code {
 }
 
 #root {
-  height: 100%;
+  min-height: 100%;
   color: #c9cacc;
   background: #1d1f21;
 }

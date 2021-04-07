@@ -30,26 +30,33 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 64px;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    padding: 16px;
+  }
 `;
 
 const Heading = styled.h1`
-  text-align: center;
-  font-size: 38px;
   display: block;
+  text-align: center;
   color: ${props => props.theme.colors.white};
+  font-size: 36px;
   margin-bottom: 32px;
 `;
 
 const Intro = styled.p`
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 32px;
 `;
 
 const ApplicationInfo = styled.div`
   text-align: center;
-  font-size: 16px;
-  margin-bottom: 32px;
+  font-size: 18px;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    margin-bottom: 64px;
+  }
 `;
 
 const Highlight = styled.span`

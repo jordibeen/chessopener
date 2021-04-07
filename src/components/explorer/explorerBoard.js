@@ -5,6 +5,7 @@ import Chessground from 'react-chessground';
 import { getSequenceForHistory } from 'helpers/chess';
 import Button from "../common/button";
 
+
 const Chess = require("chess.js");
 
 
@@ -71,9 +72,9 @@ function ExplorerBoard({ sequence, setSequence }) {
         />
       </BoardHolder>
       <ButtonHolder>
-        <UndoButton onClick={onUndoClick}>Undo</UndoButton>
-        <OrientationButton onClick={onOrientationClick}>Switch Orientation</OrientationButton>
-        <ResetButton onClick={onResetClick}>Reset</ResetButton>
+        <UndoButton onClick={onUndoClick}>undo</UndoButton>
+        <ResetButton onClick={onResetClick}>reset</ResetButton>
+        <OrientationButton onClick={onOrientationClick}>swap orientation</OrientationButton>
       </ButtonHolder>
     </Wrapper>
   );
@@ -82,6 +83,11 @@ function ExplorerBoard({ sequence, setSequence }) {
 const Wrapper = styled.div`
   width: 60%;
   max-width: 32vw;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    width: 90%;
+    max-width: none;
+  }
 `;
 
 const BoardHolder = styled.div`
@@ -114,11 +120,11 @@ const UndoButton = styled(Button)`
   margin-right: 16px;
 `;
 
-const OrientationButton = styled(Button)`
+const ResetButton = styled(Button)`
   margin-right: 16px;
 `;
 
-const ResetButton = styled(Button)`
+const OrientationButton = styled(Button)`
 `;
 
 export default ExplorerBoard;

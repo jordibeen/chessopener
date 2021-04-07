@@ -113,9 +113,9 @@ function OpeningBoard(opening) {
         }
       </SequenceHolder>
       <ButtonHolder>
-        <PreviousButton onClick={previousPosition}>Previous</PreviousButton>
-        <NextButton onClick={nextPosition}>Next</NextButton>
-        <OrientationButton onClick={onOrientationClick}>Switch Orientation</OrientationButton>
+        <OrientationButton onClick={onOrientationClick}>swap orientation</OrientationButton>
+        <PreviousButton onClick={previousPosition}>{`<  `}</PreviousButton>
+        <NextButton onClick={nextPosition}>{`>`}</NextButton>
       </ButtonHolder>
     </Wrapper>
   );
@@ -124,12 +124,22 @@ function OpeningBoard(opening) {
 const Wrapper = styled.div`
   width: 60%;
   max-width: 32vw;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    width: 90%;
+    max-width: none;
+  }
 `;
 
 const BoardHolder = styled.div`
   position: relative;
   width: 100%;
   padding-top: 100%;
+  margin-top: 66px;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    margin-top: 0;
+  }
 
   .cg-wrap {
     position: absolute;
@@ -153,9 +163,9 @@ const SequenceHolder = styled.div`
   border-radius: 4px;
   color: ${props => props.theme.colors.white};
   padding: 8px;
-  overflow: scroll;
   font-weight: bold;
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 `;
 
 const Sequence = styled.span`
@@ -172,15 +182,15 @@ const ButtonHolder = styled.div`
   justify-content: center;
 `;
 
+const OrientationButton = styled(Button)`
+  margin-right: 16px;
+`;
+
 const PreviousButton = styled(Button)`
   margin-right: 16px;
 `;
 
 const NextButton = styled(Button)`
-  margin-right: 16px;
-`;
-
-const OrientationButton = styled(Button)`
 `;
 
 export default OpeningBoard;

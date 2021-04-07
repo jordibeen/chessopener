@@ -38,10 +38,18 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 40%;
-  height: 100%;
+  height: 85vh;
   background-color: ${props => props.theme.colors.componentBackground};
   border: 1px solid ${props => props.theme.colors.lightgrey};
   border-radius: 12px;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    display: block;
+    height: auto;
+    width: 90%;
+    max-width: none;
+    margin-top: 32px;
+  }
 `;
 
 const Header = styled.div`

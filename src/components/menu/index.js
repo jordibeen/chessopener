@@ -1,11 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import Search from './search'
+import Button from "../common/button";
 
 function Menu() {
+  const history = useHistory();
+
+  function onBackButtonClick(){
+    history.goBack();
+  }
+
   return (
     <Wrapper>
+      <BackButton onClick={onBackButtonClick}>{`<<`}</BackButton>
       <TitleLink to='/'>
         <Title>chess opener</Title>
       </TitleLink>
@@ -17,23 +25,28 @@ function Menu() {
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 64px;
+  padding: 16px;
+`;
+
+const BackButton = styled(Button)`
+  display: none;
+  margin-right: 16px;
 
   @media (${props => props.theme.breakpoints.mobile}) {
-    display: block;
-  }
+     display: block;
+   }
 `;
 
 const TitleLink = styled(NavLink)`
   text-decoration: none;
   color: ${props => props.theme.colors.green};
   text-align: center;
-  font-weight: bold;
-  letter-spacing: 2px;
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 8px;
 `;
 
 export default Menu;

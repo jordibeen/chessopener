@@ -42,7 +42,8 @@ function GameInformation({game, chessHistory, currentPosition, setBoardPosition}
         <WhitePlayer>
           <PlayerLink href={`https://lichess.org/@/${game.whiteName}`} target='_blank' rel='noopener noreferrer' alt='View profile on lichess.com'>
             <WhiteAvatar />
-            <WhiteName winner={game.winner === 'white'}>{game.whiteName} ({game.whiteRating})</WhiteName>
+            <WhiteName winner={game.winner === 'white'}>{game.whiteName}</WhiteName>
+            <WhiteRating winner={game.winner === 'white'}>({game.whiteRating})</WhiteRating>
           </PlayerLink>
         </WhitePlayer>
         <Game>
@@ -62,7 +63,8 @@ function GameInformation({game, chessHistory, currentPosition, setBoardPosition}
         <BlackPlayer>
           <PlayerLink href={`https://lichess.org/@/${game.blackName}`} target='_blank' rel='noopener noreferrer' alt='View profile on lichess.com'>
             <BlackAvatar />
-            <BlackName winner={game.winner === 'black'}>{game.blackName} ({game.blackRating})</BlackName>
+            <BlackName winner={game.winner === 'black'}>{game.blackName}</BlackName>
+            <WhiteRating winner={game.winner === 'black'}>({game.blackRating})</WhiteRating>
           </PlayerLink>
         </BlackPlayer>
         <LichessLinkWrapper>
@@ -96,16 +98,24 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 40%;
-  height: 100%;
+  height: 85vh;
   background-color: ${props => props.theme.colors.componentBackground};
   border: 1px solid ${props => props.theme.colors.lightgrey};
   border-radius: 12px;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    display: block;
+    height: auto;
+    width: 90%;
+    max-width: none;
+    margin-top: 32px;
+  }
 `;
 
 const Header = styled.div`
   display: flex;
   background-color: ${props => props.theme.colors.black};
-  padding: 8px 2px;
+  padding: 8px;
   border: none;
   border-radius: 12px 12px 0 0;
 `;
@@ -173,6 +183,11 @@ const WhiteAvatar = styled(ProfileIcon)`
 `;
 
 const WhiteName = styled.div`
+  text-align: center;
+  font-weight: ${props => props.winner ? 'bold' : 'none'};
+`;
+
+const WhiteRating = styled.div`
   text-align: center;
   font-weight: ${props => props.winner ? 'bold' : 'none'};
 `;
@@ -261,6 +276,11 @@ const BlackName = styled.div`
   font-weight: ${props => props.winner ? 'bold' : 'none'};
 `;
 
+const BlackRating = styled.div`
+  text-align: center;
+  font-weight: ${props => props.winner ? 'bold' : 'none'};
+`;
+
 const LichessLinkWrapper = styled.div`
   position: absolute;
   top: 0;
@@ -283,6 +303,7 @@ const LichessIconWrapper = styled.div`
 `;
 
 const Moves = styled.div`
+  border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
   overflow: scroll;
 `;
 

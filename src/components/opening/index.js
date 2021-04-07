@@ -6,7 +6,7 @@ import OpeningInformation from './openingInformation';
 import Loader from "../common/loader";
 import Error from "../common/error";
 
-function Opening({history, location, match}) {
+function Opening({match}) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [opening, setOpening] = useState(null);
@@ -46,10 +46,10 @@ const Wrapper = styled.div`
   justify-content: space-evenly;
   height: calc(100% - 64px);
   width: 100%;
-  padding: 32px 0;
+  padding: 16px 0;
 
   @media (${props => props.theme.breakpoints.mobile}) {
-    display: block;
+    flex-direction: column;
   }
 `;
 

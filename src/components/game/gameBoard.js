@@ -113,9 +113,9 @@ function GameBoard({game, chessHistory, setChessHistory, currentPosition, setCur
         />
       </BoardHolder>
       <ButtonHolder>
-        <PreviousButton onClick={previousPosition}>Previous</PreviousButton>
-        <NextButton onClick={nextPosition}>Next</NextButton>
-        <OrientationButton onClick={onOrientationClick}>Orientation</OrientationButton>
+        <OrientationButton onClick={onOrientationClick}>swap orientation</OrientationButton>
+        <PreviousButton onClick={previousPosition}>{`<`}</PreviousButton>
+        <NextButton onClick={nextPosition}>{`>`}</NextButton>
       </ButtonHolder>
     </Wrapper>
   );
@@ -124,6 +124,11 @@ function GameBoard({game, chessHistory, setChessHistory, currentPosition, setCur
 const Wrapper = styled.div`
   width: 60%;
   max-width: 32vw;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    width: 96%;
+    max-width: none
+  }
 `;
 
 const BoardHolder = styled.div`
@@ -152,15 +157,15 @@ const ButtonHolder = styled.div`
   justify-content: center;
 `;
 
+const OrientationButton = styled(Button)`
+  margin-right: 16px;
+`;
+
 const PreviousButton = styled(Button)`
   margin-right: 16px;
 `;
 
 const NextButton = styled(Button)`
-  margin-right: 16px;
-`;
-
-const OrientationButton = styled(Button)`
 `;
 
 export default GameBoard;
