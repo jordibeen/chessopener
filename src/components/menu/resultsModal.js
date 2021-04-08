@@ -142,15 +142,20 @@ function ResultsModal({ isResultsModalOpen, toggleModal, debouncedSearch, search
 }
 
 const StyledModal = styled(Modal)`
+  justify-content: left;
 `;
 
 const ModalContent = styled.div`
-  background-color: #272727;
+  background-color: ${props => props.theme.colors.componentBackground};
   width: 760px;
   padding: 0;
-  height: 90%;
+  height: 75%;
   border-radius: 12px;
   overflow: hidden;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    width: 95%;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -176,12 +181,12 @@ const Input = styled.input`
 `;
 
 const SearchCount = styled.div`
-  margin-top: 6px;
   color: ${props => props.theme.colors.white};
   margin: 0px 16px;
   display: flex;
   align-items: center;
   letter-spacing: 1.5px;
+  text-align: center;
 `;
 
 const ResultWrapper = styled.div`
