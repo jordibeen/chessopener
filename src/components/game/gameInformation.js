@@ -64,7 +64,7 @@ function GameInformation({game, chessHistory, currentPosition, setBoardPosition}
           <PlayerLink href={`https://lichess.org/@/${game.blackName}`} target='_blank' rel='noopener noreferrer' alt='View profile on lichess.com'>
             <BlackAvatar />
             <BlackName winner={game.winner === 'black'}>{game.blackName}</BlackName>
-            <WhiteRating winner={game.winner === 'black'}>({game.blackRating})</WhiteRating>
+            <BlackRating winner={game.winner === 'black'}>({game.blackRating})</BlackRating>
           </PlayerLink>
         </BlackPlayer>
         <LichessLinkWrapper>

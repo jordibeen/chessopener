@@ -40,13 +40,13 @@ const BackButton = styled(Button)`
 const TitleLink = styled(NavLink)`
   text-decoration: none;
   color: ${props => props.theme.colors.green};
-  text-align: center;
+  text-align: left;
 `;
 
 const Title = styled.h1`
   font-weight: bold;
   font-size: 20px;
-  letter-spacing: 8px;
+  letter-spacing: 1.5px;
 `;
 
 export default Menu;
