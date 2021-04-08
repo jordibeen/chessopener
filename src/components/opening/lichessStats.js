@@ -5,14 +5,14 @@ import ReactTooltip from 'react-tooltip';
 import Loader from "../common/loader";
 import Error from "../common/error";
 
-function LichessStats(opening) {
+function LichessStats({ openingId }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [stats, setStats] = useState(null);
   const [hovered, setHovered] = useState(null);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/${opening.opening.id}/stats`)
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/${openingId}/stats`)
       .then(res => res.json())
       .then((result) => {
         setStats(result);
@@ -25,7 +25,7 @@ function LichessStats(opening) {
       return () => {
         setIsLoaded(false);
       }
-  }, [opening])
+  }, [openingId])
 
   function generateTooltip(hovered) {
     switch(hovered){

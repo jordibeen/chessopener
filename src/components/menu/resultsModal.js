@@ -99,7 +99,7 @@ function ResultsModal({ isResultsModalOpen, toggleModal, debouncedSearch, search
           />
           {
             count ?
-            <SearchCount>{count} results</SearchCount>
+            <SearchCount>{count} result{count !== 1 ? 's' : null }</SearchCount>
             : null
           }
         </InputWrapper>
@@ -116,14 +116,14 @@ function ResultsModal({ isResultsModalOpen, toggleModal, debouncedSearch, search
                 openings.map((opening, i) => {
                   return (
                     <ResultRow
-                      key={opening.id}
+                      key={i}
                       data-tip={opening.fen}
                       data-for={`search-tooltip`}
                     >
-                      <Link to={`/opening/${opening.slug}`} onClick={toggleModal}>
+                      <OpeningLink to={`/opening/${opening.slug}`} onClick={toggleModal}>
                         <ResultRowName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)}</ResultRowName>
                         <ResultRowSequence>{opening.sequence}</ResultRowSequence>
-                      </Link>
+                      </OpeningLink>
                     </ResultRow>
                   )
                 })
@@ -152,6 +152,7 @@ const ModalContent = styled.div`
   height: 75%;
   border-radius: 12px;
   overflow: hidden;
+  border: 1px solid ${props => props.theme.colors.lightgrey};
 
   @media (${props => props.theme.breakpoints.mobile}) {
     width: 95%;
@@ -163,6 +164,7 @@ const InputWrapper = styled.div`
   justify-content: space-between;
   background-color: ${props => props.theme.colors.black};
   border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
 `;
 
 const Input = styled.input`
@@ -200,12 +202,11 @@ const ResultHolder = styled.div`
 `;
 
 const ResultRow = styled.div`
-    margin: 0 16px;
-    border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
-    padding: 16px 0;
+  border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
+  padding: 16px;
 `;
 
-const Link = styled(NavLink)`
+const OpeningLink = styled(NavLink)`
   text-decoration: none;
   color: ${props => props.theme.colors.green};
 `;

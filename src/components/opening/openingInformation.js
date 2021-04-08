@@ -3,21 +3,23 @@ import styled from 'styled-components';
 
 import LichessStats from './lichessStats';
 import LichessGames from './lichessGames';
+import Continuations from './continuations';
 
-function OpeningInformation(opening) {
+function OpeningInformation({ opening }) {
   return (
     <Wrapper>
       <Header>
         <EcoWrapper>
-          <Eco>{opening.opening.eco}</Eco>
+          <Eco>{opening.eco}</Eco>
         </EcoWrapper>
         <NameSequenceWrapper>
-          <Name>{opening.opening.name}</Name>
-          <Sequence>{opening.opening.sequence}</Sequence>
+          <Name>{opening.name}</Name>
+          <Sequence>{opening.sequence}</Sequence>
         </NameSequenceWrapper>
       </Header>
-      <LichessStats opening={opening.opening} />
-      <LichessGames opening={opening.opening} />
+      <LichessStats openingId={opening.id} />
+      <LichessGames openingId={opening.id} />
+      <Continuations sequence={opening.sequence} />
     </Wrapper>
   );
 }

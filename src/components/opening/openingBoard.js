@@ -6,7 +6,7 @@ import Button from "../common/button";
 
 const Chess = require("chess.js");
 
-function OpeningBoard(opening) {
+function OpeningBoard({ opening }) {
   const [chess] = useState(new Chess());
   const [fen, setFen] = useState(null);
   const [history, setHistory] = useState(null);
@@ -14,12 +14,12 @@ function OpeningBoard(opening) {
   const [historyPosition, setHistoryPosition] = useState(null);
 
   useEffect(() => {
-    chess.load_pgn(opening.opening.sequence);
+    chess.load_pgn(opening.sequence);
     const chessHistory = chess.history();
     setHistory(chessHistory);
     setHistoryPosition(chessHistory.length);
     setFen(chess.fen())
-  }, [chess, opening.opening.sequence]);
+}, [chess, opening.sequence]);
 
   useEffect(() => {
     document.addEventListener('keydown', keydownFunc, false);
@@ -135,7 +135,7 @@ const BoardHolder = styled.div`
   position: relative;
   width: 100%;
   padding-top: 100%;
-  margin-top: 66px;
+  margin-top: 70px;
 
   @media (${props => props.theme.breakpoints.mobile}) {
     margin-top: 0;

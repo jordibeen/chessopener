@@ -9,14 +9,14 @@ import { ReactComponent as ClassicalIcon } from 'assets/icons/classical.svg';
 import Loader from '../common/loader';
 import Error from '../common/error';
 
-function OpeningInformation(opening) {
+function OpeningInformation({ openingId }) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [games, setGames] = useState(null);
 
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/${opening.opening.id}/games`)
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/${openingId}/games`)
       .then(res => res.json())
       .then((result) => {
         setGames(result);
@@ -29,7 +29,7 @@ function OpeningInformation(opening) {
       return () => {
         setIsLoaded(false);
       }
-  }, [opening])
+  }, [openingId])
 
   function getResult(winner) {
     if(winner === 'draw'){
@@ -56,9 +56,9 @@ function OpeningInformation(opening) {
   return (
       <Wrapper>
         {
-          games.map((game) => {
+          games.map((game, i) => {
             return (
-              <GameLink to={`/game/${game.id}`}>
+              <GameLink key={i} to={`/game/${game.id}`}>
                 <LichessGame>
                   <LichessType>
                     {
@@ -91,6 +91,11 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  height: 50%;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+     height: auto;
+   }
 `;
 
 const GameLink = styled(NavLink)`

@@ -2,27 +2,23 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { NavLink } from 'react-router-dom';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
-import Loader from "../common/loader";
-import Error from "../common/error";
+import Loader from '../common/loader';
+import Error from '../common/error';
 
 import { generateFenTooltip } from "helpers/fenTooltip";
 
-function MatchingOpenings({ sequence, count, setCount }) {
+function Continuations({ sequence }) {
   const [error, setError] = useState(null);
-  const [openings, setOpenings] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const limit = 50;
-  const [hasMore, setHasMore] = useState(false);
-  const [offset, setOffset] = useState(0);
+  const [openings, setOpenings] = useState(null);
+
 
   useEffect(() => {
     if(sequence) {
-      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?sequence=${sequence}&limit=${limit}`)
+      fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?sequence=${sequence}`)
       .then(res => res.json())
       .then((result) => {
-        setCount(result.count);
         setOpenings(result.rows);
         setIsLoaded(true);
       }, (error) => {
@@ -30,35 +26,9 @@ function MatchingOpenings({ sequence, count, setCount }) {
         setIsLoaded(true);
       })
     } else {
-      setCount(0);
       setOpenings([]);
     }
-
-    return () => {
-      setIsLoaded(false);
-    }
-  }, [sequence, setCount]);
-
-  useEffect(() => {
-    const page = Math.ceil(openings.length / limit);
-    const nextOffset = page * limit;
-    if(nextOffset < count) {
-      setHasMore(true);
-    } else {
-      setHasMore(false);
-    }
-    setOffset(nextOffset);
-  }, [openings, count])
-
-  function fetchMore(){
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings?sequence=${sequence}&limit=${limit}&offset=${offset}`)
-    .then(res => res.json())
-    .then((result) => {
-      setCount(result.count);
-      setOpenings(openings.concat(result.rows));
-    }, (error) => {
-    })
-  }
+  }, [sequence]);
 
   function returnResultSequence(search, sequence) {
     return (
@@ -76,26 +46,24 @@ function MatchingOpenings({ sequence, count, setCount }) {
     return <Error />
   }
 
-  if(!openings || !openings.length) {
-    return <NoOpenings>no openings found</NoOpenings>
+  if(!openings || !openings.length || (openings.length === 1 && openings[0].sequence === sequence)) {
+    return null;
   }
 
   return (
-    <Wrapper id='MatchingOpenings'>
-      <InfiniteScroll
-        dataLength={openings.length}
-        next={fetchMore}
-        hasMore={hasMore}
-        scrollableTarget={'MatchingOpenings'}
-        loader={<Loader/>}
-      >
-        {
+      <Wrapper>
+        <ContinuationTitle>continuations in this line</ContinuationTitle>
+        <RowWrapper>
+          {
             openings.map((opening, i) => {
+              if(opening.sequence === sequence){
+                return null;
+              }
               return (
                 <OpeningRow
                   key={opening.id}
                   data-tip={opening.fen}
-                  data-for={`explorer-tooltip`}
+                  data-for={`continuation-tooltip`}
                 >
                   <OpeningLink to={`/opening/${opening.slug}`}>
                     <OpeningName>[{opening.eco}] {opening.name}</OpeningName>
@@ -105,27 +73,41 @@ function MatchingOpenings({ sequence, count, setCount }) {
               )
             })
         }
-      </InfiniteScroll>
-      <ReactTooltip
-         id={`explorer-tooltip`}
-         place={'bottom'}
-         getContent={generateFenTooltip}
-       />
+        </RowWrapper>
+        <ReactTooltip
+          id={`continuation-tooltip`}
+          place={'bottom'}
+          getContent={generateFenTooltip}
+        />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow: scroll;
+  height: 50%;
 
   @media (${props => props.theme.breakpoints.mobile}) {
-    height: 320px;
-  }
+     height: auto;
+   }
+`;
+
+const ContinuationTitle = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  padding: 8px 16px;
+  color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.colors.black};
+`;
+
+const RowWrapper = styled.div`
+  overflow: scroll;
 `;
 
 const OpeningRow = styled.div`
-  border-top: 1px solid ${props => props.theme.colors.lightgrey};
+  border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
   padding: 16px;
   cursor: pointer;
 `;
@@ -153,11 +135,4 @@ const Match = styled.span`
   color: ${props => props.theme.colors.green};
 `;
 
-const NoOpenings = styled.div`
-  margin: 16px 0;
-  font-size: 16px;
-  display: flex;
-  justify-content: center;
-`;
-
-export default MatchingOpenings;
+export default Continuations;
