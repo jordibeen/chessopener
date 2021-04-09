@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import { SET_EXPLORER_SEQUENCE } from 'redux/reducers/explorer';
 import ExplorerBoard from './explorerBoard';
@@ -20,6 +21,10 @@ function Explorer() {
 
   return (
     <Wrapper>
+      <Helmet>
+          <title>{sequence}</title>
+          <meta name="description" content={`Exploring sequence: ${sequence}`} />
+      </Helmet>
       <ExplorerBoard
         sequence={sequence}
         setSequence={setSequence} />

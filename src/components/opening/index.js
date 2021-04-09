@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import OpeningBoard from './openingBoard';
 import OpeningInformation from './openingInformation';
@@ -34,6 +35,10 @@ function Opening({match}) {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>[{opening.eco}] {opening.name}</title>
+        <meta name="description" content={`opening [${opening.eco}] ${opening.name}`}/>
+      </Helmet>
       <OpeningBoard opening={opening} />
       <OpeningInformation opening={opening} />
     </Wrapper>

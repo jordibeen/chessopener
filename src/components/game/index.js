@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import GameBoard from './gameBoard';
 import GameInformation from './gameInformation';
@@ -24,6 +25,10 @@ function Game({history, location, match}) {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>[{game.opening.eco}] {game.opening.name} ({game.whiteName} vs {game.blackName})</title>
+        <meta name="description" content={`opening [${game.opening.eco}] ${game.opening.name} - game ${game.whiteName} vs ${game.blackName}`} />
+      </Helmet>
       <GameBoard
         game={game}
         chessHistory={chessHistory}

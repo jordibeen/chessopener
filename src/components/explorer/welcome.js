@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 function Welcome() {
   return (
     <Wrapper>
+      <Helmet>
+        <title>welcome to chessopener.com</title>
+        <meta name="description" content="C" />
+      </Helmet>
       <Heading>
         welcome to chessopener.com
       </Heading>
