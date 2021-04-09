@@ -126,7 +126,7 @@ const Wrapper = styled.div`
   max-width: 32vw;
 
   @media (${props => props.theme.breakpoints.mobile}) {
-    width: 96%;
+    width: 90%;
     max-width: none
   }
 `;

@@ -12,10 +12,7 @@ const Button = styled.button`
   letter-spacing: 1.5px;
   font-size: 16px;
   cursor: pointer;
-
-  :hover {
-     background-color: ${props => props.theme.colors.componentBackgroundHighlight};
-   }
+  touch-action: manipulation;
 `;
 
 export default Button;
