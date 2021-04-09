@@ -70,11 +70,11 @@ function ResultsModal({ isResultsModalOpen, toggleModal, debouncedSearch, search
       name.split('***').forEach((match, i) => {
         if(i % 2){
           retval.push(
-            <MatchingResultNameMatch>{match}</MatchingResultNameMatch>
+            <MatchingResultNameMatch key={i}>{match}</MatchingResultNameMatch>
           )
         } else {
           retval.push(
-            <MatchingResultName>{match}</MatchingResultName>
+            <MatchingResultName key={i}>{match}</MatchingResultName>
           )
         }
       });

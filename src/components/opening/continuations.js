@@ -89,8 +89,8 @@ const Wrapper = styled.div`
   overflow: scroll;
   height: 50%;
 
-  @media (${props => props.theme.breakpoints.mobile}) {
-     height: auto;
+    @media (${props => props.theme.breakpoints.mobile}) {
+     height: 400px;
    }
 `;
 

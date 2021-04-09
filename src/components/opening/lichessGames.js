@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { NavLink } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { ReactComponent as BlitzIcon } from 'assets/icons/blitz.svg';
 import { ReactComponent as RapidIcon } from 'assets/icons/rapid.svg';
@@ -10,16 +11,21 @@ import Loader from '../common/loader';
 import Error from '../common/error';
 
 function OpeningInformation({ openingId }) {
+  const [games, setGames] = useState(null);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [games, setGames] = useState(null);
+  const limit = 5;
+  const [hasMore, setHasMore] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [count, setCount] = useState(0);
 
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/${openingId}/games`)
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/${openingId}/games?limit=${limit}`)
       .then(res => res.json())
       .then((result) => {
-        setGames(result);
+        setCount(result.count);
+        setGames(result.rows);
         setIsLoaded(true);
       }, (error) => {
         setError(error);
@@ -30,6 +36,30 @@ function OpeningInformation({ openingId }) {
         setIsLoaded(false);
       }
   }, [openingId])
+
+  useEffect(() => {
+    if(games){
+      const page = Math.ceil(games.length / limit);
+      const nextOffset = page * limit;
+      if(nextOffset < count) {
+        setHasMore(true);
+      } else {
+        setHasMore(false);
+      }
+      setOffset(nextOffset);
+    }
+  }, [games, count])
+
+
+  function fetchMore(){
+    fetch(`${process.env.REACT_APP_API_BASEURL}/api/openings/${openingId}/games?limit=${limit}&offset=${offset}`)
+    .then(res => res.json())
+    .then((result) => {
+      setCount(result.count);
+      setGames(games.concat(result.rows));
+    }, (error) => {
+    })
+  }
 
   function getResult(winner) {
     if(winner === 'draw'){
@@ -54,7 +84,14 @@ function OpeningInformation({ openingId }) {
   }
 
   return (
-      <Wrapper>
+      <Wrapper id='LichessGames'>
+        <InfiniteScroll
+             dataLength={games.length}
+             next={fetchMore}
+             hasMore={hasMore}
+             scrollableTarget={'LichessGames'}
+             loader={<Loader/>}
+        >
         {
           games.map((game, i) => {
             return (
@@ -83,6 +120,7 @@ function OpeningInformation({ openingId }) {
             )
           })
         }
+      </InfiniteScroll>
     </Wrapper>
   );
 }
@@ -94,7 +132,7 @@ const Wrapper = styled.div`
   height: 50%;
 
   @media (${props => props.theme.breakpoints.mobile}) {
-     height: auto;
+     height: 240px;
    }
 `;
 
