@@ -40,7 +40,7 @@ const BackButton = styled(Button)`
 const TitleLink = styled(NavLink)`
   text-decoration: none;
   color: ${props => props.theme.colors.green};
-  text-align: left;
+  text-align: right;
 `;
 
 const Title = styled.h1`

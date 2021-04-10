@@ -6,21 +6,24 @@ function Welcome() {
   return (
     <Wrapper>
       <Helmet>
-        <title>welcome to chessopener.com</title>
-        <meta name="description" content="C" />
+        <title>exploration board</title>
+        <meta name="description" content="explore chess openings" />
       </Helmet>
       <Heading>
-        welcome to chessopener.com
+        chessopener.com
       </Heading>
       <Intro>
-        this application was created as a way to explore, analyse and practice chess openings by combining an openings database to
-        the <ExternalLink href='https://lichess.org/api' target='_blank' rel='noopener noreferrer'>lichess api</ExternalLink>
+        easily <Highlight>explore</Highlight>, <Highlight>analyse</Highlight> and <Highlight>practice</Highlight> chess openings
       </Intro>
       <ApplicationInfo>
-        start off by playing an opening on the <Highlight>explorer board</Highlight>, or <Highlight>press escape</Highlight> to search through openings by name
+        start off by making a move on the <Highlight>exploration board</Highlight>, or <Highlight>press escape</Highlight> to search through openings by name
       </ApplicationInfo>
+      <TechnicalInfo>
+        this application connects an openings database to the <ExternalLink href='https://lichess.org/api' target='_blank' rel='noopener noreferrer'>lichess api</ExternalLink>,
+        created with <ExternalLink href='https://reactjs.org/' target='_blank' rel='noopener noreferrer'>react</ExternalLink>, <ExternalLink href='https://redux.js.org/' target='_blank' rel='noopener noreferrer'>redux</ExternalLink>, <ExternalLink href='https://expressjs.com/' target='_blank' rel='noopener noreferrer'>express</ExternalLink> and <ExternalLink href='https://sequelize.org/' target='_blank' rel='noopener noreferrer'>sequelize</ExternalLink>
+      </TechnicalInfo>
       <Outro>
-        enjoy this product? consider <ExternalLink href='https://www.buymeacoffee.com/jordaye' target='_blank' rel='noopener noreferrer'>buying me a coffee</ExternalLink>
+        <ExternalLink href='https://www.buymeacoffee.com/jordaye' target='_blank' rel='noopener noreferrer'>buy me a coffee</ExternalLink>
       </Outro>
     </Wrapper>
   );
@@ -51,13 +54,19 @@ const Heading = styled.h1`
 
 const Intro = styled.p`
   text-align: center;
-  font-size: 18px;
+  font-size: 24px;
   margin-bottom: 32px;
 `;
 
 const ApplicationInfo = styled.div`
   text-align: center;
-  font-size: 18px;
+  font-size: 24px;
+  margin-bottom: 32px;
+`;
+
+const TechnicalInfo = styled.div`
+  text-align: center;
+  font-size: 14px;
 
   @media (${props => props.theme.breakpoints.mobile}) {
     margin-bottom: 64px;
@@ -74,7 +83,7 @@ const Outro = styled.div`
   right: 0;
   margin-bottom: 4px;
   margin-right: 8px;
-  font-size: 16px;
+  font-size: 14px;
 `;
 
 const ExternalLink = styled.a`

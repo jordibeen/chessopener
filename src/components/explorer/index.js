@@ -23,7 +23,7 @@ function Explorer() {
     <Wrapper>
       <Helmet>
           <title>{sequence}</title>
-          <meta name="description" content={`Exploring sequence: ${sequence}`} />
+          <meta name="description" content={`exploration sequence: ${sequence}`} />
       </Helmet>
       <ExplorerBoard
         sequence={sequence}
