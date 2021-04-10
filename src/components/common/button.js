@@ -12,7 +12,10 @@ const Button = styled.button`
   letter-spacing: 1.5px;
   font-size: 16px;
   cursor: pointer;
-  touch-action: manipulation;
+
+  @media (${props => props.theme.breakpoints.mobile}) {
+    touch-action: manipulation;
+  }
 `;
 
 export default Button;
