@@ -54,7 +54,7 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   background-color: ${props => props.theme.colors.black};
-  height: 64px;
+  min-height: 64px;
   padding: 16px;
   letter-spacing: 1.5px;
   border: none;
@@ -75,6 +75,7 @@ const Sequence = styled.span`
 const SequenceCount = styled.div`
   margin-top: 6px;
   color: ${props => props.theme.colors.white};
+  text-align: center;
 `;
 
 export default ExplorerResults;
