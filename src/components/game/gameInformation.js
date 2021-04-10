@@ -303,8 +303,14 @@ const LichessIconWrapper = styled.div`
 `;
 
 const Moves = styled.div`
-  border-bottom: 1px solid ${props => props.theme.colors.lightgrey};
   overflow: scroll;
+
+  /* Disable scroll bars entirely */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const MoveRow = styled.div`

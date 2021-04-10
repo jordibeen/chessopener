@@ -195,6 +195,13 @@ const ResultWrapper = styled.div`
   height: 100%;
   overflow: scroll;
   width: 100%;
+
+  /* Disable scroll bars entirely */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const ResultHolder = styled.div`

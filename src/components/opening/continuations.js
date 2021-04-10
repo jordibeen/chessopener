@@ -86,7 +86,6 @@ function Continuations({ sequence }) {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: scroll;
   height: 50%;
 
     @media (${props => props.theme.breakpoints.mobile}) {
@@ -104,6 +103,13 @@ const ContinuationTitle = styled.div`
 
 const RowWrapper = styled.div`
   overflow: scroll;
+
+  /* Disable scroll bars entirely */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const OpeningRow = styled.div`

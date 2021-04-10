@@ -13,8 +13,16 @@ const Button = styled.button`
   font-size: 16px;
   cursor: pointer;
 
+  :hover {
+    background-color: ${props => props.theme.colors.componentBackgroundHighlight};
+  }
+
   @media (${props => props.theme.breakpoints.mobile}) {
     touch-action: manipulation;
+
+    :hover {
+      background-color: ${props => props.theme.colors.black};
+    }
   }
 `;
 

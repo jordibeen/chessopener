@@ -122,6 +122,13 @@ const Wrapper = styled.div`
   @media (${props => props.theme.breakpoints.mobile}) {
     height: 320px;
   }
+
+  /* Disable scroll bars entirely */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const OpeningRow = styled.div`
