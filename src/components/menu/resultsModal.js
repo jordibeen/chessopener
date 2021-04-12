@@ -121,7 +121,7 @@ function ResultsModal({ isResultsModalOpen, toggleModal, debouncedSearch, search
                       data-for={`search-tooltip`}
                     >
                       <OpeningLink to={`/opening/${opening.slug}`} onClick={toggleModal}>
-                        <ResultRowName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)}</ResultRowName>
+                        <ResultRowName>[{opening.eco}] {getNameMatchString(debouncedSearch, opening.name)} {opening.stat ? <OpeningAverageRating>[{opening.stat.averageRating}]</OpeningAverageRating> : null }</ResultRowName>
                         <ResultRowSequence>{opening.sequence}</ResultRowSequence>
                       </OpeningLink>
                     </ResultRow>
@@ -229,6 +229,10 @@ const MatchingResultName = styled.span`
 `;
 
 const MatchingResultNameMatch = styled.span`
+  color: ${props => props.theme.colors.green};
+`;
+
+const OpeningAverageRating = styled.span`
   color: ${props => props.theme.colors.green};
 `;
 

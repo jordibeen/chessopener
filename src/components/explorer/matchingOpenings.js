@@ -98,7 +98,7 @@ function MatchingOpenings({ sequence, count, setCount }) {
                   data-for={`explorer-tooltip`}
                 >
                   <OpeningLink to={`/opening/${opening.slug}`}>
-                    <OpeningName>[{opening.eco}] {opening.name}</OpeningName>
+                    <OpeningName>[{opening.eco}] {opening.name} {opening.stat ? <OpeningAverageRating>[{opening.stat.averageRating}]</OpeningAverageRating> : null }</OpeningName>
                     { returnResultSequence(sequence, opening.sequence) }
                   </OpeningLink>
                 </OpeningRow>
@@ -142,14 +142,18 @@ const OpeningLink = styled(NavLink)`
   color: ${props => props.theme.colors.green};
 `;
 
-const OpeningName = styled.p`
+const OpeningName = styled.div`
   font-size: 18px;
   color: ${props => props.theme.colors.white};
   margin-bottom: 8px;
   font-weight: bold;
 `;
 
-const ResultSequence = styled.p`
+const OpeningAverageRating = styled.span`
+  color: ${props => props.theme.colors.green};
+`;
+
+const ResultSequence = styled.div`
   font-size: 14px;
   font-style: italic;
   color: ${props => props.theme.colors.lightgrey};
