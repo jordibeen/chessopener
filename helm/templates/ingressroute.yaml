@@ -1,0 +1,22 @@
+{{- if .Values.ingressRoute.enabled -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "helm-chart.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "helm-chart.labels" . | nindent 4 }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`{{ .Values.ingressRoute.host }}`)
+    priority: 10
+    services:
+    - name: {{ include "helm-chart.fullname" . }}
+      port: {{ .Values.service.port }}
+      namespace: {{ .Values.namespace }}
+  tls:
+    secretName: {{ .Values.ingressRoute.host }}-tls
+{{ end }}
