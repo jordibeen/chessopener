@@ -22,6 +22,7 @@
     "redux": "^4.0.5",
     "styled-components": "^5.2.1",
     "styled-react-modal": "^2.0.1",
+    "type-fest": "0.13.1",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
