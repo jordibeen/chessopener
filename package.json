@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "REACT_APP_API_BASEURL=http://localhost:7000 react-scripts start",
-    "build": "REACT_APP_API_BASEURL=http://api.chessopener.com react-scripts build",
+    "build": "REACT_APP_API_BASEURL=https://api.chessopener.com react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -11,7 +11,9 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`{{ .Values.ingressRoute.host }}`)
+    match: Host(`{{ .Values.ingressRoute.host }}`) || Host(`www.{{ .Values.ingressRoute.host }}`)
+    middlewares:
+    - name: stripwww
     priority: 10
     services:
     - name: {{ include "helm-chart.fullname" . }}
