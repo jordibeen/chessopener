@@ -21,6 +21,7 @@ autoscaling:
 
 ingressRoute:
   enabled: false
+  stripwww: false
   host:
   tls:
     issuer:

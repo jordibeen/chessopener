@@ -11,7 +11,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`{{ .Values.ingressRoute.host }}`) || Host(`www.{{ .Values.ingressRoute.host }}`)
+    match: Host(`{{ .Values.ingressRoute.host }}`) {{ if .Values.ingressRoute.stripwww }} || Host(`www.{{ .Values.ingressRoute.host }}`) {{ end }}
     middlewares:
     - name: stripwww
     priority: 10
