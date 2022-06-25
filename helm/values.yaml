@@ -1,5 +1,8 @@
 replicaCount: 1
 
+env:
+  reactAppApiBaseurl:
+
 image:
   repository:
   tag: latest
