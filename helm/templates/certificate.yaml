@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.ingressRoute.host }}
+  namespace: {{ .Values.namespace }}
+spec:
+  dnsNames:
+    - {{ .Values.ingressRoute.host }}
+  secretName: {{ .Values.ingressRoute.host }}-tls
+  issuerRef:
+    name: {{ .Values.ingressRoute.tls.issuer }}
+    kind: ClusterIssuer

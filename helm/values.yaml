@@ -1,0 +1,26 @@
+replicaCount: 1
+
+env:
+  reactAppApiBaseurl:
+
+image:
+  repository:
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+ingressRoute:
+  enabled: false
+  host:
+  tls:
+    issuer:
