@@ -1,6 +1,6 @@
 apiVersion: v2
 name: chessopener
-description: A Helm chart for chessopener
+description: A Helm chart for chessopener.com
 type: application
 version: 0.0.1
 appVersion: '0.0.1'

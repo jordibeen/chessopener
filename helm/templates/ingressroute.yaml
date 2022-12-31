@@ -1,23 +1,28 @@
-{{- if .Values.ingressRoute.enabled -}}
+{{ if .Values.ingressRoute.enabled }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ include "helm-chart.fullname" . }}
+  name: {{ .Values.ingressRoute.host }}
   namespace: {{ .Values.namespace }}
   labels:
-    {{- include "helm-chart.labels" . | nindent 4 }}
+    component: homepage
+    release: {{ .Release.Name }}
 spec:
   entryPoints:
     - websecure
   routes:
   - kind: Rule
-    match: Host(`{{ .Values.ingressRoute.host }}`) {{ if .Values.ingressRoute.stripwww }} || Host(`www.{{ .Values.ingressRoute.host }}`) {{ end }}
+    {{ if .Values.ingressRoute.isRoot }}
+    match: Host(`{{ .Values.ingressRoute.host }}`) || Host(`www.{{ .Values.ingressRoute.host }}`)
     middlewares:
     - name: stripwww
+    {{ else }}
+    match: Host(`{{ .Values.ingressRoute.host }}`)
+    {{ end }}
     priority: 10
     services:
-    - name: {{ include "helm-chart.fullname" . }}
-      port: {{ .Values.service.port }}
+    - name: {{ .Release.Name }}
+      port: {{ .Values.app.port }}
       namespace: {{ .Values.namespace }}
   tls:
     secretName: {{ .Values.ingressRoute.host }}-tls

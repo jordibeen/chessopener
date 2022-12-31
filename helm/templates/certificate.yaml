@@ -6,7 +6,7 @@ metadata:
 spec:
   dnsNames:
     - {{ .Values.ingressRoute.host }}
-    {{ if .Values.ingressRoute.stripwww }}
+    {{ if .Values.ingressRoute.isRoot }}
     - www.{{ .Values.ingressRoute.host }}
     {{ end }}
   secretName: {{ .Values.ingressRoute.host }}-tls
