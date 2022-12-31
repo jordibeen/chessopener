@@ -15,24 +15,20 @@ jobs:
     name: Build and push
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Docker meta
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ secrets.ECR_IMAGE_URL }}
-      -
-        name: Login to Amazon ECR
-        uses: docker/login-action@v1
+          images: ${{ secrets.DOCR_IMAGE_URL }}
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
         with:
-          registry: ${{ secrets.ECR_IMAGE_URL }}
-          username: ${{ secrets.IAM_ACCESS_KEY_ID }}
-          password: ${{ secrets.IAM_ACCESS_KEY_SECRET }}
-      -
-        name: Build and push
+          token: ${{ secrets.DO_ACCESS_TOKEN }}
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
